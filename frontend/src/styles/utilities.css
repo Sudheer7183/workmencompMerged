@@ -1,0 +1,105 @@
+/* ── Display ──────────────────────────────────────────────────────────────── */
+.flex        { display: flex; }
+.flex-col    { display: flex; flex-direction: column; }
+.items-center { align-items: center; }
+.items-start  { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-end     { justify-content: flex-end; }
+.gap-1  { gap: var(--space-1); }
+.gap-2  { gap: var(--space-2); }
+.gap-3  { gap: var(--space-3); }
+.gap-4  { gap: var(--space-4); }
+.gap-6  { gap: var(--space-6); }
+
+/* ── Spacing ──────────────────────────────────────────────────────────────── */
+.mt-4  { margin-top: var(--space-4); }
+.mt-6  { margin-top: var(--space-6); }
+.mb-4  { margin-bottom: var(--space-4); }
+.mb-6  { margin-bottom: var(--space-6); }
+.p-4   { padding: var(--space-4); }
+.p-6   { padding: var(--space-6); }
+
+/* ── Width ────────────────────────────────────────────────────────────────── */
+.w-full  { width: 100%; }
+.min-w-0 { min-width: 0; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── Position ─────────────────────────────────────────────────────────────── */
+.relative { position: relative; }
+.absolute { position: absolute; }
+
+/* ── Overflow ─────────────────────────────────────────────────────────────── */
+.overflow-hidden { overflow: hidden; }
+
+/* ── Cursor ───────────────────────────────────────────────────────────────── */
+.cursor-pointer { cursor: pointer; }
+
+/* ── Border ───────────────────────────────────────────────────────────────── */
+.rounded    { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.border     { border: 1px solid var(--border); }
+
+/* ── N/A indicator ────────────────────────────────────────────────────────── */
+.na-value {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 12px;
+}
+
+/* ── Variance colour coding ───────────────────────────────────────────────── */
+.variance-positive { color: var(--color-red); }   /* above estimate = bad */
+.variance-negative { color: var(--color-green); }  /* below estimate = good */
+.variance-neutral  { color: var(--text-muted); }
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 200ms ease forwards; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin { animation: spin 0.8s linear infinite; }
+
+/* ── Loading spinner ──────────────────────────────────────────────────────── */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ── Empty state ──────────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16) var(--space-8);
+  text-align: center;
+  color: var(--text-muted);
+  gap: var(--space-3);
+}
+.empty-state-icon { font-size: 36px; opacity: 0.4; }
+
+/* ── Error state ──────────────────────────────────────────────────────────── */
+.error-banner {
+  background-color: color-mix(in srgb, var(--color-red) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-red) 30%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-red);
+  font-size: 13px;
+}
+
+/* ── Spec-canonical variance classes (V9 S26) ─────────────────────────────── */
+.pos-val       { color: var(--color-red);   }   /* above estimate — unfavourable */
+.neg-val       { color: var(--color-green); }   /* below estimate — favourable   */
+.na-indicator  { color: var(--text-muted); font-style: italic; font-size: 12px; }
+.muted-text    { color: var(--text-muted); }
+.is-active     { color: var(--brand); }

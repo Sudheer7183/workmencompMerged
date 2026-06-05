@@ -1,0 +1,73 @@
+"""Add raw_file_bytes column to ingestion_runs.
+
+Revision ID: 0005_add_raw_file_bytes
+Revises: 0004_ingestion_mode_column
+Create Date: 2026-06-05
+
+The ingestion_runs table was originally created with s3_file_key (TEXT)
+for future S3 storage.  Phase 3 stores raw file bytes directly in the
+database so the post-approval pipeline can retrieve the original file
+without an S3 dependency.  This migration adds the BYTEA column that
+_store_file_bytes / _load_file_bytes expect.
+"""
+from __future__ import annotations
+
+from alembic import op
+import sqlalchemy as sa
+
+
+revision      = "0005_add_raw_file_bytes"
+down_revision = "0004_ingestion_mode_column"
+branch_labels = None
+depends_on    = None
+
+
+def _get_tenant_schemas(conn: sa.engine.Connection) -> list[str]:
+    result = conn.execute(
+        sa.text(
+            "SELECT schema_name FROM information_schema.schemata "
+            "WHERE schema_name LIKE 'tenant_%'"
+        )
+    )
+    return [row[0] for row in result]
+
+
+def _column_exists(
+    conn: sa.engine.Connection, schema: str, table: str, column: str
+) -> bool:
+    result = conn.execute(
+        sa.text(
+            "SELECT COUNT(*) FROM information_schema.columns "
+            "WHERE table_schema = :schema "
+            "  AND table_name   = :table "
+            "  AND column_name  = :col"
+        ),
+        {"schema": schema, "table": table, "col": column},
+    )
+    return result.scalar() > 0  # type: ignore[operator]
+
+
+def upgrade() -> None:
+    conn = op.get_bind()
+
+    for schema in _get_tenant_schemas(conn):
+        if not _column_exists(conn, schema, "ingestion_runs", "raw_file_bytes"):
+            conn.execute(
+                sa.text(
+                    f'ALTER TABLE "{schema}".ingestion_runs '
+                    f"ADD COLUMN raw_file_bytes BYTEA"
+                )
+            )
+
+
+def downgrade() -> None:
+    conn = op.get_bind()
+
+    for schema in _get_tenant_schemas(conn):
+        if _column_exists(conn, schema, "ingestion_runs", "raw_file_bytes"):
+            conn.execute(
+                sa.text(
+                    f'ALTER TABLE "{schema}".ingestion_runs '
+                    f"DROP COLUMN raw_file_bytes"
+                )
+            )

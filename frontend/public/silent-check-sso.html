@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<!--
+  silent-check-sso.html
+  
+  Required by keycloak-js when using onLoad: "check-sso" with
+  silentCheckSsoRedirectUri. Keycloak loads this page in a hidden iframe
+  to check for an existing SSO session without a full redirect.
+  
+  MUST be served at: <origin>/silent-check-sso.html
+  Vite serves files in /public/ at the root path automatically.
+  In production, serve this as a static file alongside index.html.
+  
+  DO NOT add authentication or redirects to this page.
+-->
+<head><title>Silent SSO Check</title></head>
+<body>
+<script>
+  // Posts the current URL (with Keycloak's response params) back to the
+  // parent frame so keycloak-js can complete the silent check.
+  parent.postMessage(location.href, location.origin);
+</script>
+</body>
+</html>

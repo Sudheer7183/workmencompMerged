@@ -1,0 +1,103 @@
+# =============================================================================
+# WC Premium Audit Platform — Backend — Phase 2
+# Python 3.12+ · FastAPI · SQLAlchemy 2.0 · Pydantic v2
+# =============================================================================
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audit-platform-backend"
+version = "2.0.0"
+description = "WC Premium Audit Platform — FastAPI Backend"
+requires-python = ">=3.12"
+
+dependencies = [
+    # Web framework
+    "fastapi==0.115.6",
+    "uvicorn[standard]==0.32.1",
+    "python-multipart==0.0.12",
+
+    # Database — async driver + ORM + migrations
+    "asyncpg==0.30.0",
+    "sqlalchemy==2.0.36",
+    "alembic==1.14.0",
+
+    # Data validation & settings
+    "pydantic==2.10.3",
+    "pydantic-settings==2.6.1",
+
+    # Authentication — Phase 2: live Keycloak RS256 verification
+    "python-jose[cryptography]==3.3.0",
+    "python-keycloak==4.7.3",
+
+    # Cache & rate-limiting
+    "redis[hiredis]==5.2.1",
+
+    # AI narrative generation
+    "anthropic==0.40.0",
+
+    # Expression sandbox for editable calc rules (V9 S18.3)
+    "simpleeval==1.0.3",
+
+    # Excel ingestion pipeline
+    "openpyxl==3.1.5",
+    "pandas==2.2.3",
+
+    # Structured logging
+    "structlog==24.4.0",
+
+    # HTTP client (Keycloak JWKS, Admin API)
+    "httpx==0.27.2",
+
+    # S3 uploads (tenant logo)
+    "boto3==1.35.80",
+    "botocore==1.35.80",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest==8.3.4",
+    "pytest-asyncio==0.24.0",
+    "pytest-cov==6.0.0",
+    "pytest-mock==3.14.0",
+    "httpx==0.27.2",
+
+    # JWT generation for tests
+    "cryptography==44.0.0",
+
+    # Code quality
+    "ruff==0.8.3",
+    "mypy==1.13.0",
+
+    # Type stubs
+    "types-redis==4.6.0.20241004",
+]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["*/alembic/*", "*/tests/*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]

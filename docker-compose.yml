@@ -1,0 +1,178 @@
+# ---------------------------------------------------------------------------
+# WC Premium Audit Platform — Development Environment — Phase 2
+#
+# Usage:
+#   docker-compose up --build
+#
+# Startup order:
+#   1. db        → postgres creates auditplatform + keycloak DBs
+#   2. redis     → redis starts
+#   3. keycloak  → imports realm, takes ~90-120s to become healthy
+#   4. backend   → runs Alembic migrations, starts uvicorn
+#   5. frontend  → Vite dev server starts
+#
+# Login credentials (infra/keycloak/audit-platform-realm.json):
+#   superadmin    / admin123    → SUPER_ADMIN
+#   demo-admin    / admin123    → TENANT_ADMIN  (tenant: demo)
+#   demo-auditor  / auditor123  → AUDITOR       (tenant: demo)
+#   demo-reviewer / reviewer123 → REVIEWER      (tenant: demo)
+# ---------------------------------------------------------------------------
+
+services:
+
+  # -------------------------------------------------------------------------
+  # PostgreSQL 16
+  # -------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: audit_platform_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auditplatform
+      POSTGRES_PASSWORD: auditplatform_dev
+      POSTGRES_DB: auditplatform
+      # Init script creates both auditplatform and keycloak databases on first boot
+      POSTGRES_MULTIPLE_DATABASES: auditplatform,keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/create-multiple-databases.sh:/docker-entrypoint-initdb.d/01-create-multiple-databases.sh:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditplatform -d auditplatform"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # -------------------------------------------------------------------------
+  # Redis 7
+  # -------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: audit_platform_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  # -------------------------------------------------------------------------
+  # Keycloak 24
+  # -------------------------------------------------------------------------
+  keycloak:
+    build:
+      context: ./infra/keycloak
+      dockerfile: Dockerfile
+    container_name: audit_platform_keycloak
+    restart: unless-stopped
+    command: start-dev --import-realm
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/keycloak
+      KC_DB_USERNAME: auditplatform
+      KC_DB_PASSWORD: auditplatform_dev
+      KC_HTTP_PORT: 8080
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HEALTH_ENABLED: "true"
+      KC_HOSTNAME_URL: "http://localhost:8080"
+    volumes:
+      - ./infra/keycloak:/opt/keycloak/data/import
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 && cat <&3 | grep -q 'UP'"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+
+  # -------------------------------------------------------------------------
+  # Backend — FastAPI
+  # -------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: audit_platform_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://auditplatform:auditplatform_dev@db:5432/auditplatform"
+      REDIS_URL: "redis://redis:6379/0"
+      KEYCLOAK_URL: "http://keycloak:8080"
+      KEYCLOAK_REALM: "audit-platform"
+      KEYCLOAK_CLIENT_ID: "audit-platform-backend"
+      KEYCLOAK_CLIENT_SECRET: "audit-platform-backend-secret"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      S3_BUCKET: "${S3_BUCKET:-audit-platform-uploads}"
+      S3_ENDPOINT_URL: "${S3_ENDPOINT_URL:-}"
+      ENVIRONMENT: "development"
+      LOG_LEVEL: "DEBUG"
+      PLATFORM_DOMAIN: "localhost"
+      SKIP_JWT_VERIFICATION: "${SKIP_JWT_VERIFICATION:-false}"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "
+        echo 'Running Alembic migrations...' &&
+        alembic upgrade head &&
+        echo 'Migrations complete. Starting server...' &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level info
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 180s
+
+  # -------------------------------------------------------------------------
+  # Frontend — Vite Dev Server
+  # -------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: audit_platform_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      VITE_BACKEND_URL: "http://backend:8000"
+      VITE_KEYCLOAK_URL: "http://localhost:8080"
+      VITE_KEYCLOAK_REALM: "audit-platform"
+      VITE_KEYCLOAK_CLIENT_ID: "audit-platform-frontend"
+      VITE_PLATFORM_DOMAIN: "localhost"
+      VITE_SKIP_AUTH: "${SKIP_JWT_VERIFICATION:-false}"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
