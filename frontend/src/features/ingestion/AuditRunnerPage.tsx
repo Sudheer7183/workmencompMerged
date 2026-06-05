@@ -17,7 +17,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLabels } from "@/hooks/useLabels";
 import { useTenantCarrier } from "@/context/TenantCarrierContext";
-import { uploadFile, type IngestionMode } from "./services/ingestionApi";
+import { uploadFile, approveMapping, type IngestionMode } from "./services/ingestionApi";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -177,26 +177,51 @@ export function AuditRunnerPage(): React.JSX.Element {
     setIsUploading(true);
     setErrorMessage(null);
 
-    let lastRunId = 0;
+    // Collect all populated slots in order so we know which is last
+    const filledSlots = slots.filter((s) => s.file);
+    const auditSlot   = filledSlots.find((s) => s.id === "audit");
+    const nonAuditSlots = filledSlots.filter((s) => s.id !== "audit");
+
+    // Upload order: non-audit files first (payroll, XML), audit report last.
+    // Non-audit files (payroll) have all-HIGH-confidence mappings and do not
+    // require human review — auto-approve them immediately after upload so they
+    // fully ingest before the audit report is processed.
+    // The audit report is uploaded last and its session drives the mapping UI.
+    const orderedSlots = [...nonAuditSlots, ...(auditSlot ? [auditSlot] : [])];
+
+    let lastRunId    = 0;
     let lastSessionId = 0;
+    let totalFiles    = orderedSlots.length;
 
     try {
-      for (let i = 0; i < slots.length; i++) {
-        const slot = slots[i];
-        if (!slot.file) continue;
+      for (let i = 0; i < orderedSlots.length; i++) {
+        const slot = orderedSlots[i];
+        const isLast = i === orderedSlots.length - 1;
 
         setUploadProgress(
-          `Uploading ${i + 1} of ${slots.length}: ${slot.label}…`
+          `Uploading ${i + 1} of ${totalFiles}: ${slot.label}…`
         );
 
         const response = await uploadFile(
           carrierId,
           1,
-          slot.file,
+          slot.file!,
           ingestionMode
         );
-        lastRunId = response.run_id;
+        lastRunId     = response.run_id;
         lastSessionId = response.session_id;
+
+        // Auto-approve non-audit files (payroll, XML) immediately.
+        // These have all-HIGH-confidence mappings and require no human review.
+        // The audit report is the only file that goes through the mapping UI.
+        if (!isLast && ingestionMode === "calc_engine") {
+          setUploadProgress(
+            `Processing ${slot.label}…`
+          );
+          await approveMapping(response.session_id);
+          // Brief pause to let background ingestion start
+          await new Promise((resolve) => setTimeout(resolve, 800));
+        }
       }
 
       navigate(`/audit-runner/${lastRunId}/mapping`, {

@@ -86,7 +86,12 @@ export function PoliciesListPage(): React.JSX.Element {
     : (data?.items ?? []);
 
   // Engine on = variance_pct is non-null for at least one row
-  const engineOn = filtered.some((p) => p.variance_pct !== null);
+  // Show engine-derived fields whenever we have premium data (est_premium > 0)
+  // or variance data. Don't hide data just because variance_pct hasn't been
+  // written by the calc engine yet — it's now computed on the fly by the API.
+  const engineOn = filtered.some(
+    (p) => p.variance_pct !== null || (p.est_premium !== null && p.est_premium > 0)
+  );
 
   const columns: Column<PolicyListItem>[] = [
     {

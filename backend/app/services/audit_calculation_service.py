@@ -958,30 +958,53 @@ class AuditCalculationService:
         pvp: PayrollVarianceResult,
         db: AsyncSession,
     ) -> None:
-        await db.execute(
-            text(
-                "UPDATE premium_variance "
-                "SET variance_pct = :pct "
-                "WHERE policy_id = :pid AND ingestion_run_id = :rid AND carrier_id = :cid"
-            ),
-            {
-                "pct": float(pv.variance_pct) if pv.variance_pct is not None else None,
-                "pid": policy_id,
-                "rid": ingestion_run_id,
-                "cid": carrier_id,
-            },
+        # UPDATE by policy_id only — not by ingestion_run_id.
+        # The premium_variance row may have been created by a DIFFERENT run
+        # (e.g., the payroll file run) than the one that triggered the calc engine.
+        # Using MAX(pv_id) ensures we always find and update the correct row.
+        #
+        # Also compute variance_pct here directly from the DB values as a safety net,
+        # in case the context builder got different est/actual than what's stored.
+        pv_lookup = await db.execute(
+            text("SELECT pv_id, est_premium_end, actual_premium FROM premium_variance "
+                 "WHERE policy_id = :pid ORDER BY pv_id DESC LIMIT 1"),
+            {"pid": policy_id},
         )
+        pv_db_row = pv_lookup.fetchone()
+        final_variance_pct = None
+        if pv_db_row and pv_db_row[1] and pv_db_row[2]:
+            from decimal import Decimal as _D, DivisionByZero, InvalidOperation
+            try:
+                est_db = _D(str(pv_db_row[1]))
+                actual_db = _D(str(pv_db_row[2]))
+                if est_db != _D("0"):
+                    final_variance_pct = float((actual_db - est_db) / est_db)
+            except (DivisionByZero, InvalidOperation):
+                pass
+        elif pv.variance_pct is not None:
+            final_variance_pct = float(pv.variance_pct)
+
+        if pv_db_row:
+            await db.execute(
+                text(
+                    "UPDATE premium_variance "
+                    "SET variance_pct = :pct "
+                    "WHERE pv_id = :pv_id"
+                ),
+                {"pct": final_variance_pct, "pv_id": pv_db_row[0]},
+            )
         await db.execute(
             text(
                 "UPDATE payroll_variance_policy "
                 "SET reported_pct = :rpct, classified_pct = :cpct "
-                "WHERE policy_id = :pid AND ingestion_run_id = :rid AND carrier_id = :cid"
+                "WHERE policy_id = :pid AND carrier_id = :cid "
+                "  AND ingestion_run_id = (SELECT MAX(ingestion_run_id) FROM payroll_variance_policy "
+                "                          WHERE policy_id = :pid AND ingestion_run_id > 0)"
             ),
             {
                 "rpct": float(pvp.reported_pct) if pvp.reported_pct is not None else None,
                 "cpct": float(pvp.classified_pct) if pvp.classified_pct is not None else None,
                 "pid": policy_id,
-                "rid": ingestion_run_id,
                 "cid": carrier_id,
             },
         )

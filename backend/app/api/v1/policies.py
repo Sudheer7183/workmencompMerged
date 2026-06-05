@@ -88,23 +88,30 @@ async def list_policies(
             SELECT
                 p.policy_id,
                 p.policy_number,
-                ph.name                      AS insured_name,
+                ph.name                          AS insured_name,
                 p.state_code,
                 p.effective_date,
                 p.policy_status,
-                pv.est_premium_end           AS est_premium,
+                pv.est_premium_end               AS est_premium,
+                pv.actual_premium,
                 pv.variance_amount,
-                pv.variance_pct,
+                CASE
+                    WHEN pv.variance_pct IS NOT NULL THEN pv.variance_pct
+                    WHEN pv.est_premium_end IS NOT NULL
+                         AND pv.variance_amount IS NOT NULL
+                         AND pv.est_premium_end <> 0
+                    THEN pv.variance_amount / pv.est_premium_end
+                    ELSE NULL
+                END                              AS variance_pct,
                 p.risk_level,
                 p.audit_status
             FROM policies p
             JOIN policyholders ph ON ph.policyholder_id = p.policyholder_id
-            LEFT JOIN premium_variance pv ON pv.policy_id = p.policy_id
-                AND pv.ingestion_run_id = (
-                    SELECT MAX(ir.run_id)
-                    FROM ingestion_runs ir
-                    WHERE ir.carrier_id = p.carrier_id AND ir.status = 'complete'
-                )
+            LEFT JOIN premium_variance pv ON pv.pv_id = (
+                SELECT MAX(pv2.pv_id)
+                FROM premium_variance pv2
+                WHERE pv2.policy_id = p.policy_id
+            )
             WHERE {where_clause}
             ORDER BY p.policy_id
             LIMIT :limit OFFSET :offset
@@ -121,10 +128,11 @@ async def list_policies(
             effective_date=r[4],
             policy_status=r[5],
             est_premium=r[6],
-            variance_amount=r[7],
-            variance_pct=r[8],
-            risk_level=r[9],
-            audit_status=r[10],
+            # r[7] = actual_premium (not used in list but in SELECT)
+            variance_amount=r[8],
+            variance_pct=r[9],
+            risk_level=r[10],
+            audit_status=r[11],
         )
         for r in rows_result.fetchall()
     ]
@@ -182,13 +190,31 @@ async def get_policy_detail(
     )
     latest_run_id = run_result.scalar_one()
 
-    # Resolve engine_on
+    # Resolve engine_on:
+    # True when the carrier has the calc engine enabled (carrier_calc_config)
+    # OR when premium_variance data already exists for any policy in this carrier.
+    # This prevents the "engine off" banner from hiding valid calculated data.
     ccc_result = await db.execute(
         text("SELECT use_calculation_engine FROM carrier_calc_config WHERE carrier_id = :cid"),
         {"cid": carrier_id},
     )
     ccc_row = ccc_result.fetchone()
-    engine_on: bool = bool(ccc_row[0]) if ccc_row else True
+    config_engine_on: bool = bool(ccc_row[0]) if ccc_row else True
+
+    # If config says off but we have variance data, still show it (data exists → show it)
+    has_variance_data = False
+    if not config_engine_on:
+        pv_check = await db.execute(
+            text(
+                "SELECT COUNT(*) FROM premium_variance pv "
+                "JOIN policies p ON p.policy_id = pv.policy_id "
+                "WHERE p.carrier_id = :cid"
+            ),
+            {"cid": carrier_id},
+        )
+        has_variance_data = (pv_check.scalar_one() or 0) > 0
+
+    engine_on: bool = config_engine_on or has_variance_data
 
     meta = PolicyMetaCard(
         policy_id=row[0],
@@ -245,11 +271,24 @@ async def get_premium_variance(
         from fastapi import HTTPException, status
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No premium variance data.")
 
+    # Compute variance_pct if NULL in DB (calc engine may not have run yet).
+    # variance_pct = variance_amount / est_premium_end (stored as ratio, e.g. -0.2219)
+    # NaIndicator "pct" format multiplies by 100 to display -22.2%.
+    stored_variance_pct = row[3]
+    if stored_variance_pct is None and row[2] is not None and row[0] is not None:
+        try:
+            from decimal import Decimal as _D
+            est = _D(str(row[0]))
+            var = _D(str(row[2]))
+            stored_variance_pct = float(var / est) if est != 0 else None
+        except Exception:
+            stored_variance_pct = None
+
     return PremiumVarianceResponse(
         est_premium_end=row[0],
         actual_premium=row[1],
         variance_amount=row[2],
-        variance_pct=row[3],
+        variance_pct=stored_variance_pct,
         as_of_date=row[4],
     )
 
@@ -482,28 +521,37 @@ async def get_submission_metrics(
 ) -> PayrollMetricsResponse:
     await _check(carrier_id, request, token, db)
 
-    # ── Reference: mock_data_api.py + premium_agent.py calculation model ───────
+    # ── Reference: mock_data_api.py _parse_audit_report() + premium_agent.py ──
     #
-    # actual_received    = actual_subs_from_file stored as synthetic rows (run_id < 0)
-    #                      + 1 real summary row (run_id > 0) = total rows for this policy
-    # expected_full_term = full policy term periods (from payment_frequency + dates)
-    # missing            = max(0, expected_full_term - actual_received)
-    # submit_rate        = actual_received / expected_full_term * 100
+    # From audit report Business Entity section:
+    #   a_actual_payroll_sub  = expected_till_today  (calendar-based, for YTD proration)
+    #   a_actual_payroll_sub2 = actual_submissions   (Number of Payroll Reports Submitted)
+    #   a_expected_payroll_sub = expected_full_term  (full policy term periods)
     #
-    # The reported_pct column on the main run row stores submit_rate directly
-    # (written by ingestion_service Step 10).
+    # From premium_agent.py:
+    #   missing      = max(0, a_expected_payroll_sub - a_actual_payroll_sub2)
+    #   submit_rate  = a_actual_payroll_sub2 / a_expected_payroll_sub * 100
+    #   received     = a_actual_payroll_sub2 (actual submissions from file)
+    #
+    # We store:
+    #   reported_pct on the main run row = submit_rate (written during ingestion Step 10)
+    #   total payroll_variance_policy rows = a_actual_payroll_sub2 (1 real + N-1 synthetic)
 
-    # Get the main ingestion run's stored submit_rate and actual_received
+    # Get stored submit_rate and actual_submissions count
     pvp_result = await db.execute(
         text("""
-            SELECT reported_pct,
-                   (SELECT COUNT(*) FROM payroll_variance_policy
-                    WHERE policy_id = :pid AND carrier_id = :cid) AS total_rows
+            SELECT
+                reported_pct,
+                (SELECT COUNT(*) FROM payroll_variance_policy
+                 WHERE policy_id = :pid AND carrier_id = :cid) AS total_rows
             FROM payroll_variance_policy
-            WHERE policy_id = :pid AND carrier_id = :cid
+            WHERE policy_id  = :pid
+              AND carrier_id = :cid
               AND ingestion_run_id = (
-                  SELECT MAX(ingestion_run_id) FROM payroll_variance_policy
-                  WHERE policy_id = :pid AND carrier_id = :cid AND ingestion_run_id > 0
+                    SELECT MAX(ingestion_run_id)
+                    FROM payroll_variance_policy
+                    WHERE policy_id = :pid AND carrier_id = :cid
+                      AND ingestion_run_id > 0
               )
             LIMIT 1
         """),
@@ -511,8 +559,8 @@ async def get_submission_metrics(
     )
     pvp_row = pvp_result.fetchone()
 
-    # actual_received = total rows (real summary + synthetic per-period rows)
-    # total_rows = actual_subs_from_file (1 summary + N-1 synthetic = N total)
+    # actual_received = a_actual_payroll_sub2 = total rows written during ingestion
+    # (1 real summary row + N-1 synthetic per-period rows = N total = actual_submissions)
     actual_received: int = int(pvp_row[1]) if pvp_row and pvp_row[1] else 0
 
     zero_result = await db.execute(
@@ -527,9 +575,12 @@ async def get_submission_metrics(
     )
     missing_count_db: int = missing_result.scalar_one() or 0
 
-    # Derive expected_full_term from payment_frequency + policy dates
+    # expected_full_term = a_expected_payroll_sub (full policy term periods)
     policy_meta = await db.execute(
-        text("SELECT payment_frequency, effective_date, expiration_date FROM policies WHERE policy_id = :pid"),
+        text(
+            "SELECT payment_frequency, effective_date, expiration_date "
+            "FROM policies WHERE policy_id = :pid"
+        ),
         {"pid": policy_id},
     )
     meta_row = policy_meta.fetchone()
@@ -543,22 +594,21 @@ async def get_submission_metrics(
             months = (exp.year - eff.year) * 12 + (exp.month - eff.month)
             expected_submissions = round(months * periods_per_year / 12)
 
-    # missing = max(0, expected_full - actual_received)
-    # Use DB table if populated, otherwise compute directly
+    # missing = max(0, expected_full_term - actual_submissions_from_file)
     if missing_count_db > 0:
         final_missing = missing_count_db
-    elif expected_submissions is not None:
+    elif expected_submissions is not None and actual_received >= 0:
         final_missing = max(0, expected_submissions - actual_received)
     else:
         final_missing = None
 
-    # submit_rate stored in reported_pct during ingestion (Step 10)
-    # = actual_subs_from_file / expected_full_term * 100
+    # submission_rate is stored as RATIO (0.667) in reported_pct.
+    # The frontend multiplies by 100 to display as percentage.
+    # Fallback also returns ratio.
     if pvp_row and pvp_row[0] is not None:
-        submission_rate = pvp_row[0]
+        submission_rate = float(pvp_row[0])   # already a ratio from ingestion Step 10
     elif expected_submissions and expected_submissions > 0 and actual_received is not None:
-        from decimal import Decimal as _D
-        submission_rate = round(float(_D(str(actual_received)) / _D(str(expected_submissions)) * _D("100")), 1)
+        submission_rate = round(actual_received / expected_submissions, 4)  # ratio
     else:
         submission_rate = None
 

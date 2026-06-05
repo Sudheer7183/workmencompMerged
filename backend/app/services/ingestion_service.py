@@ -1731,14 +1731,17 @@ class IngestionService:
         # payroll_variance_policy for the main run stores:
         #   reported_pct  = submit_rate = actual_subs_from_file / expected_full_term * 100
         if expected_full_term > 0 and actual_subs_from_file >= 0:
-            submit_rate_val = round(actual_subs_from_file / expected_full_term * 100, 1)
+            # Store as RATIO (0.667) not percentage (66.7).
+            # NaIndicator "pct" format uses Intl.NumberFormat percent style
+            # which multiplies by 100 internally. Storing 0.667 → displays 66.7%.
+            submit_rate_ratio = round(actual_subs_from_file / expected_full_term, 4)
             await db.execute(
                 text("""
                     UPDATE payroll_variance_policy
                     SET reported_pct = :rate, classified_pct = :rate
                     WHERE policy_id = :pid AND ingestion_run_id = :rid
                 """),
-                {"rate": submit_rate_val, "pid": policy_id, "rid": run_id},
+                {"rate": submit_rate_ratio, "pid": policy_id, "rid": run_id},
             )
             await db.commit()
 
@@ -1778,22 +1781,68 @@ class IngestionService:
             await db.commit()
 
         # ── Step 11: Write premium_variance ───────────────────────────────────
+        # Reference: mock_data_api.py + premium_agent.py
+        #
+        # est_premium_end  = est_ytd_premium = (est_cc_premium_full / expected_full) * expected_till_today
+        #   where expected_till_today = calendar periods from eff_date to today (a_actual_payroll_sub)
+        #   This is NOT the full-term audit report total ($30,456.96)
+        #
+        # actual_premium   = SUM(earned_premium) from payroll file rows (a_actual_payroll_sub2 submissions)
+        #   When audit report only (no payroll file): actual_premium = est_ytd (variance = 0 until payroll uploaded)
+        #   When payroll file also uploaded: _upsert_payroll_class overwrites actual_premium with earned_premium
+        #
+        # total_premium from audit report = est_cc_premium_full (used only as the full-term base)
         if total_premium is not None:
-            await db.execute(
+            # Compute est_ytd using expected_till_today from Step 9
+            if expected_full_term > 0:
+                est_ytd_prem = round(
+                    (float(total_premium) / expected_full_term) * expected_till_today, 2
+                )
+            else:
+                est_ytd_prem = float(total_premium)
+
+            # Check if payroll file was already ingested (inserted actual_premium first)
+            existing_pv = await db.execute(
                 text("""
-                    INSERT INTO premium_variance
-                      (policy_id, carrier_id, ingestion_run_id, as_of_date,
-                       est_premium_end, actual_premium)
-                    VALUES (:pid, :cid, :rid, :dt, :est, :actual)
-                    ON CONFLICT (policy_id, ingestion_run_id) DO UPDATE SET
-                      est_premium_end = EXCLUDED.est_premium_end,
-                      actual_premium  = EXCLUDED.actual_premium
+                    SELECT pv_id, actual_premium FROM premium_variance
+                    WHERE policy_id = :pid
+                    ORDER BY ingestion_run_id DESC LIMIT 1
                 """),
-                {
-                    "pid": policy_id, "cid": carrier_id, "rid": run_id,
-                    "dt":  eff_dt, "est": total_premium, "actual": total_premium,
-                },
+                {"pid": policy_id},
             )
+            existing_pv_row = existing_pv.fetchone()
+
+            # If payroll file already set actual_premium, preserve it.
+            # Otherwise set actual_premium = est_ytd_prem (will be updated when payroll uploads).
+            if existing_pv_row and existing_pv_row[1] and float(existing_pv_row[1]) > 0:
+                # Payroll already ingested: just update est_premium_end
+                await db.execute(
+                    text("""
+                        UPDATE premium_variance
+                        SET est_premium_end = :est
+                        WHERE pv_id = :pv_id
+                    """),
+                    {"est": est_ytd_prem, "pv_id": existing_pv_row[0]},
+                )
+            else:
+                # Audit report first: insert with est = actual (variance = 0 until payroll uploads)
+                await db.execute(
+                    text("""
+                        INSERT INTO premium_variance
+                          (policy_id, carrier_id, ingestion_run_id, as_of_date,
+                           est_premium_end, actual_premium)
+                        VALUES (:pid, :cid, :rid, :dt, :est, :actual)
+                        ON CONFLICT (policy_id, ingestion_run_id) DO UPDATE SET
+                          est_premium_end = EXCLUDED.est_premium_end,
+                          actual_premium  = EXCLUDED.actual_premium
+                    """),
+                    {
+                        "pid": policy_id, "cid": carrier_id, "rid": run_id,
+                        "dt":  eff_dt,
+                        "est":    est_ytd_prem,
+                        "actual": est_ytd_prem,
+                    },
+                )
             await db.commit()
 
         logger.info(
@@ -2267,9 +2316,31 @@ class IngestionService:
         Aggregates wages per (policy_id, state_code, class_code) then upserts.
         payroll_variance_class uses class_code_id FK to public.class_codes.
         """
+        # Build a direct header→index map from the worksheet itself.
+        # This is used to find earned_premium regardless of whether the
+        # mapping proposal included it — the payroll file format is fixed.
+        header_vals = [
+            str(v).replace("\n", " ").strip().lower() if v is not None else ""
+            for v in next(ws.iter_rows(min_row=header_row, max_row=header_row, values_only=True), [])
+        ]
+        # Direct column index (1-based) for earned_premium
+        # Payroll file column: "Earned Prem." → norm = "earned prem"
+        earned_prem_col: Optional[int] = None
+        for ci, h in enumerate(header_vals, start=1):
+            norm = "".join(c for c in h if c.isalnum() or c == " ").strip()
+            if norm in ("earned prem", "earned premium", "earnedprem"):
+                earned_prem_col = ci
+                break
+        # If not in cmap already, add it
+        if earned_prem_col and "earned_premium" not in cmap:
+            cmap = {**cmap, "earned_premium": earned_prem_col}
+
         # Aggregate: (policy_id, state_code, class_code_str) → totals
+        # earned_premium is read from the "Earned Prem." column in the payroll file.
+        # It is used to UPDATE premium_variance.actual_premium after all rows are written.
         agg: dict[tuple, dict] = defaultdict(lambda: {
             "wages": Decimal("0"), "exposure": Decimal("0"),
+            "earned_premium": Decimal("0"),
             "as_of": None, "description": "",
         })
         policy_cache: dict[str, Optional[int]] = {}
@@ -2300,15 +2371,21 @@ class IngestionService:
             wages = _safe_decimal(self._cv(row, cmap, "wages")) or Decimal("0")
             # exposure = wages when not separately mapped
             exposure = _safe_decimal(self._cv(row, cmap, "exposure")) or wages
+            # earned_premium from "Earned Prem." column — the actual premium this period
+            earned_premium = _safe_decimal(self._cv(row, cmap, "earned_premium")) or Decimal("0")
             as_of = _safe_date(self._cv(row, cmap, "as_of_date", "report_date"))
 
             key = (pid, state, cls_str)
-            agg[key]["wages"]    += wages
-            agg[key]["exposure"] += exposure
+            agg[key]["wages"]          += wages
+            agg[key]["exposure"]       += exposure
+            agg[key]["earned_premium"] += earned_premium
             if as_of and not agg[key]["as_of"]:
                 agg[key]["as_of"] = as_of
 
         count = 0
+        # Track earned_premium per policy for premium_variance update
+        policy_earned_premium: dict[int, Decimal] = {}
+
         for (pid, state, cls_str), totals in agg.items():
             class_code_id = await self._resolve_class_code_id(cls_str, cls_str, db)
             as_of = totals["as_of"] or date.today()
@@ -2328,8 +2405,70 @@ class IngestionService:
                  "state": state, "dt": as_of,
                  "wages": float(totals["wages"]), "exposure": float(totals["exposure"])},
             )
+            # Accumulate earned_premium per policy
+            if pid not in policy_earned_premium:
+                policy_earned_premium[pid] = Decimal("0")
+            policy_earned_premium[pid] += totals["earned_premium"]
             count += 1
 
+        await db.commit()
+
+        # ── Update premium_variance.actual_premium with earned_premium from payroll file ──
+        # Reference: premium_agent.py → earned_premium = sum(r["earned_premium"] for r in matching)
+        # Reference: mock_data_api.py → "Earned Prem." column from payroll file
+        #
+        # The audit report sets actual_premium = est_ytd_premium (same as est).
+        # When the payroll file is uploaded (same run or different run), we UPDATE
+        # actual_premium with the real earned_premium from the payroll rows.
+        # This creates the variance: actual_premium ≠ est_premium_end.
+        for pid, total_earned in policy_earned_premium.items():
+            if total_earned <= 0:
+                continue
+
+            # Check if a premium_variance row already exists (written by audit report)
+            existing = await db.execute(
+                text("SELECT pv_id, est_premium_end FROM premium_variance WHERE policy_id = :pid ORDER BY ingestion_run_id DESC LIMIT 1"),
+                {"pid": pid},
+            )
+            existing_row = existing.fetchone()
+
+            if existing_row:
+                # Audit report already wrote est_premium_end — just update actual_premium
+                await db.execute(
+                    text("""
+                        UPDATE premium_variance
+                        SET actual_premium = :earned
+                        WHERE pv_id = :pv_id
+                    """),
+                    {"earned": float(total_earned), "pv_id": existing_row[0]},
+                )
+                logger.info(
+                    "ingestion.payroll_class.actual_premium_updated",
+                    policy_id=pid, pv_id=existing_row[0],
+                    earned_premium=float(total_earned),
+                    est_premium=float(existing_row[1]) if existing_row[1] else None,
+                )
+            else:
+                # Payroll file arrived before audit report — write actual_premium now.
+                # est_premium_end will be filled in when audit report is uploaded.
+                await db.execute(
+                    text("""
+                        INSERT INTO premium_variance
+                          (policy_id, carrier_id, ingestion_run_id, as_of_date,
+                           est_premium_end, actual_premium)
+                        VALUES (:pid, :cid, :rid, now(), 0, :earned)
+                        ON CONFLICT (policy_id, ingestion_run_id) DO UPDATE SET
+                          actual_premium = EXCLUDED.actual_premium
+                    """),
+                    {
+                        "pid": pid, "cid": carrier_id, "rid": run_id,
+                        "earned": float(total_earned),
+                    },
+                )
+                logger.info(
+                    "ingestion.payroll_class.actual_premium_inserted",
+                    policy_id=pid, earned_premium=float(total_earned),
+                )
         await db.commit()
         return count
 
