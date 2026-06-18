@@ -1,0 +1,1798 @@
+
+> wc-audit-platform-frontend@2.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app
+
+stderr | tests/unit/components/ExceptionTracker.test.tsx > ExceptionTracker > renders summary panel with run stats
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/unit/components/ExceptionTracker.test.tsx (15 tests) 878ms
+stderr | tests/unit/components/CalcEngineToggle.test.tsx > CalcEngineToggle > renders the engine label
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/unit/components/CalcEngineToggle.test.tsx (10 tests) 508ms
+stderr | tests/integration/IngestionProgress.test.tsx > IngestionProgress > shows 'Mapping approved' text for status=mapping_approved
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > renders the Audit Runner heading
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > Type 1 upload mode includes an XML file slot
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > shows error when submitting with no file selected
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > shows error for non-XLSX file type in xlsx slot
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ tests/integration/IngestionProgress.test.tsx (10 tests) 1628ms
+   ✓ IngestionProgress > shows 'Mapping approved' text for status=mapping_approved 436ms
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > navigates to /audit-runner/{runId}/mapping on successful upload
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | tests/integration/OnboardingWizard.test.tsx > OnboardingWizard > renders 5-step progress indicator
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > navigates to /audit-runner/{runId}/mapping on successful upload
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+
+stderr | tests/integration/AuditRunnerPage.test.tsx > AuditRunnerPage > navigates to /audit-runner/{runId}/mapping on successful upload
+Error: AggregateError
+    at Object.dispatchError (/app/node_modules/jsdom/lib/jsdom/living/xhr/xhr-utils.js:63:19)
+    at Request.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/xhr/XMLHttpRequest-impl.js:655:18)
+    at Request.emit (node:events:536:35)
+    at ClientRequest.<anonymous> (/app/node_modules/jsdom/lib/jsdom/living/helpers/http-request.js:127:14)
+    at ClientRequest.emit (node:events:524:28)
+    at emitErrorEvent (node:_http_client:101:11)
+    at MockHttpSocket.socketErrorListener (node:_http_client:504:5)
+    at MockHttpSocket.emit (node:events:524:28)
+    at MockHttpSocket.emit (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:165:12)
+    at Socket.<anonymous> (file:///app/node_modules/@mswjs/interceptors/src/interceptors/ClientRequest/MockHttpSocket.ts:308:14) undefined
+
+stderr | tests/integration/PolicyDetail.test.tsx > PolicyDetailPage > renders all 11 meta card fields with correct labels from useLabels
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | tests/integration/TenantCreationWizard.test.tsx > TenantCreationWizard > renders 4-step progress indicator
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/integration/AuditRunnerPage.test.tsx (9 tests) 3131ms
+   ✓ AuditRunnerPage > renders the Audit Runner heading 360ms
+   ✓ AuditRunnerPage > shows error for non-XLSX file type in xlsx slot 456ms
+   ✓ AuditRunnerPage > navigates to /audit-runner/{runId}/mapping on successful upload 1229ms
+stderr | tests/integration/AuditRunnerPage.test.tsx
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  • GET /api/v1/ingestion/carrier-mode/1
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | tests/unit/components/CarrierConfigHub.test.tsx > CalcEngineToggle > renders the engine label
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/unit/components/CarrierConfigHub.test.tsx (10 tests) 677ms
+   ✓ CalcEngineToggle > renders the engine label 424ms
+ ✓ tests/integration/PolicyDetail.test.tsx (7 tests) 3914ms
+   ✓ PolicyDetailPage > renders all 11 meta card fields with correct labels from useLabels 1197ms
+   ✓ PolicyDetailPage > renders all 4 tab labels 471ms
+   ✓ PolicyDetailPage > Summary tab shows Premium Variance section 430ms
+   ✓ PolicyDetailPage > Summary tab shows 5 payroll metrics pills 511ms
+   ✓ PolicyDetailPage > AI Narrative tab renders placeholder when engine is on 664ms
+   ✓ PolicyDetailPage > renders engine-off notice when engine_on is false 309ms
+stderr | tests/integration/FieldMappingReview.test.tsx > FieldMappingReview > renders the field mapping review title
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | tests/unit/components/DataSourcesTab.test.tsx > DataSourcesTab > renders data source list from API
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/integration/FieldMappingReview.test.tsx (6 tests) 1947ms
+   ✓ FieldMappingReview > renders the field mapping review title 747ms
+   ✓ FieldMappingReview > renders HIGH, MEDIUM, and UNMATCHED confidence tier sections 321ms
+ ✓ tests/unit/components/DataSourcesTab.test.tsx (12 tests) 1514ms
+   ✓ DataSourcesTab > renders data source list from API 438ms
+stderr | tests/unit/components/FieldMappingTab.test.tsx > FieldMappingTab > renders the tab container
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/unit/components/FieldMappingTab.test.tsx (10 tests) 1247ms
+ ✓ tests/integration/OnboardingWizard.test.tsx (11 tests) 10423ms
+   ✓ OnboardingWizard > renders 5-step progress indicator 525ms
+   ✓ OnboardingWizard > step 1: required fields validated before proceeding 1116ms
+   ✓ OnboardingWizard > step 2: PRIMARY and SECONDARY contact forms rendered 993ms
+   ✓ OnboardingWizard > step 3: logo drag-drop zone renders 1235ms
+   ✓ OnboardingWizard > step 3: brand_color hex input validates 6-char format 1129ms
+   ✓ OnboardingWizard > step 3: invalid brand_color shows inline error 1362ms
+   ✓ OnboardingWizard > step 4: shows carrier list with config status badges 1181ms
+   ✓ OnboardingWizard > step 5: calls PATCH users/me onboarding_completed=true 1236ms
+   ✓ OnboardingWizard > step 5: navigates to dashboard after completion 1285ms
+ ✓ tests/unit/hooks/useTheme.test.ts (5 tests) 222ms
+stderr | tests/integration/UserManagement.test.tsx > UserManagement > renders user list with role badges
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+stderr | tests/integration/PoliciesList.test.tsx > PoliciesListPage > renders the Policies heading
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ❯ tests/integration/UserManagement.test.tsx (5 tests | 2 failed) 2521ms
+   ✓ UserManagement > renders user list with role badges 628ms
+   ✓ UserManagement > TENANT_ADMIN can open create user modal 722ms
+   × UserManagement > create user modal has role selector limited to AUDITOR and REVIEWER 312ms
+     → Unable to find a label with the text of: /Role/i
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"users-list"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"users-list__header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"users-list__title"[39m
+        [36m>[39m
+          [0mUser Management[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn--primary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mInvite User[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"data-table-wrapper"[39m
+      [36m>[39m
+        [36m<table[39m
+          [33mclass[39m=[32m"data-table"[39m
+        [36m>[39m
+          [36m<thead>[39m
+            [36m<tr>[39m
+              [36m<th>[39m
+                [0mName[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mEmail[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mRole[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mStatus[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mLast Login[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mActions[0m
+              [36m</th>[39m
+            [36m</tr>[39m
+          [36m</thead>[39m
+          [36m<tbody>[39m
+            [36m<tr[39m
+              [33mclass[39m=[32m"data-table__row"[39m
+            [36m>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0mDemo[0m
+                [0m [0m
+                [0mAdmin[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0madmin@demo.example.com[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"badge badge-accent"[39m
+                [36m>[39m
+                  [0mAdmin[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"user-status-badge user-status-badge--suspended"[39m
+                [36m>[39m
+                  [0mSuspended[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"users-list__last-login"[39m
+                [36m>[39m
+                  [0m—[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m/>[39m
+            [36m</tr>[39m
+            [36m<tr[39m
+              [33mclass[39m=[32m"data-table__row"[39m
+            [36m>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0mDemo[0m
+                [0m [0m
+                [0mAuditor[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0mauditor@demo.example.com[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"badge badge-blue"[39m
+                [36m>[39m
+                  [0mAuditor[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"user-status-badge user-status-badge--suspended"[39m
+                [36m>[39m
+                  [0mSuspended[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"users-list__last-login"[39m
+                [36m>[39m
+                  [0m—[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"btn btn--sm btn--secondary"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mEdit[0m
+                [36m</button>[39m
+              [36m</td>[39m
+            [36m</tr>[39m
+          [36m</tbody>[39m
+        [36m</table>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"create-user-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"modal-backdrop"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"modal"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"modal__header"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"modal__title"[39m
+              [33mid[39m=[32m"create-user-title"[39m
+            [36m>[39m
+              [0mCreate User[0m
+            [36m</h2>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Close"[39m
+              [33mclass[39m=[32m"modal__close"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m✕[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"modal__body"[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"modal__section"[39m
+            [36m>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"modal__section-title"[39m
+              [36m>[39m
+                [0mPersonal Details[0m
+              [36m</h3>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"modal__name-row"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"form-field"[39m
+                [36m>[39m
+                  [36m<label[39m
+                    [33mclass[39m=[32m"form-field__label"[39m
+                    [33mfor[39m=[32m"cu-first"[39m
+                  [36m>[39m
+                    [0mFirst Name[0m
+                  [36m</label>[39m
+                  [36m<input[39m
+                    [33mautocomplete[39m=[32m"given-name"[39m
+                    [33mclass[39m=[32m"form-field__input"[39m
+                    [33mdata-testid[39m=[32m"input-first-name"[39m
+                    [33mid[39m=[32m"cu-first"[39m
+                    [33mtype[39m=[32m"text"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"form-field"[39m
+                [36m>[39m
+                  [36m<label[39m
+                    [33mclass[39m=[32m"form-field__label"[39m
+                    [33mfor[39m=[32m"cu-last"[39m
+                  [36m>[39m
+                    [0mLast Name[0m
+                  [36m</label>[39m
+                  [36m<input[39m
+                    [33mautocomplete[39m=[32m"family-name"[39m
+                    [33mclass[39m=[32m"form-field__input"[39m
+                    [33mdata-testid[39m=[32m"input-last-name"[39m
+                    [33mid[39m=[32m"cu-last"[39m
+                    [33mtype[39m=[32m"text"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"form-field"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"form-field__label"[39m
+                  [33mfor[39m=[32m"cu-email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mautocomplete[39m=[32m"email"[39m
+                  [33mclass[39m=[32m"form-field__input"[39m
+                  [33mdata-testid[39m=[32m"input-email"[39m
+                  [33mid[39m=[32m"cu-email"[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"modal__section"[39m
+            [36m>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"modal__section-title"[39m
+              [36m>[39m
+                [0mRole & Permissions[0m
+              [36m</h3>[39m
+              [36m<div[39m
+                [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: var(--space-2);"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"modal__role-option modal__role-option--selected"[39m
+                  [33mdata-testid[39m=[32m"role-option-auditor"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"modal__role-option-header"[39m
+                  [36m>[39m
+                    [36m<input[39m
+                      [33mchecked[39m=[32m""[39m
+                      [33mname[39m=[32m"role"[39m
+                      [33mtype[39m=[32m"radio"[39m
+                      [33mvalue[39m=[32m"AUDITOR"[39m
+                    [36m/>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"modal__role-option-label"[39m
+                    [36m>[39m
+                      [0mAuditor[0m
+                    [36m</span>[39m
+                  [36m</div>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"modal__role-option-description"[39m
+                  [36m>[39m
+                    [0mCan upload files and trigger calculations.[0m
+                  [36m</p>[39m
+                [36m</label>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"modal__role-option"[39m
+                  [33mdata-testid[39m=[32m"role-option-reviewer"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"modal__role-option-header"[39m
+                  [36m>[39m
+                    [36m<input[39m
+                      [33mname[39m=[32m"role"[39m
+                      [33mtype[39m=[32m"radio"[39m
+                      [33mvalue[39m=[32m"REVIEWER"[39m
+                    [36m/>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"modal__role-option-label"[39m
+                    [36m>[39m
+                      [0mReviewer[0m
+                    [36m</span>[39m
+                  [36m</div>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"modal__role-option-description"[39m
+                  [36m>[39m
+                    [0mRead-only. Can view policies and reports.[0m
+                  [36m</p>[39m
+                [36m</label>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"modal__footer"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--ghost"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mCancel[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--primary"[39m
+                [33mdata-testid[39m=[32m"btn-send-invitation"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSend Invitation →[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   × UserManagement > REVIEWER cannot see Invite User button 241ms
+     → expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <button
+  class="btn btn--primary"
+  type="button"
+>
+  Invite User
+</button> instead
+   ✓ UserManagement > deactivate user shows confirmation dialog 602ms
+ ✓ tests/unit/components/TenantLogo.test.tsx (6 tests) 823ms
+   ✓ TenantLogo > renders img element when logo_url is set 581ms
+ ❯ tests/integration/TenantCreationWizard.test.tsx (14 tests | 2 failed) 15149ms
+   × TenantCreationWizard > renders 4-step progress indicator 991ms
+     → Unable to find an element with the text: Carrier Assignment. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"wizard-page"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-page__header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"wizard-page__title"[39m
+        [36m>[39m
+          [0mNew Tenant[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"wizard-page__subtitle"[39m
+        [36m>[39m
+          [0mComplete all steps to provision and activate a new tenant.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Wizard progress"[39m
+        [33mclass[39m=[32m"wizard-steps"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--active"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mTenant Details[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m2[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mAdmin User[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--optional"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m3[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mCarrier Assignment (Optional)[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__optional-hint"[39m
+          [36m>[39m
+            [0mOptional[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m4[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mReview & Activate[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-panel"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-panel__body"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"wizard-step"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"wizard-step__title"[39m
+            [36m>[39m
+              [0mTenant Details[0m
+            [36m</h2>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"form-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"form-field__label"[39m
+                [33mfor[39m=[32m"tenant-name"[39m
+              [36m>[39m
+                [0mTenant Name[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33mclass[39m=[32m"form-field__input"[39m
+                [33mid[39m=[32m"tenant-name"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mtype[39m=[32m"text"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"form-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"form-field__label"[39m
+                [33mfor[39m=[32m"tenant-slug"[39m
+              [36m>[39m
+                [0mSubdomain[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33mclass[39m=[32m"form-field__input "[39m
+                [33mid[39m=[32m"tenant-slug"[39m
+                [33mtype[39m=[32m"text"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"form-field__hint"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"subdomain-preview"[39m
+                [36m>[39m
+                  [0myour-tenant[0m
+                  [0m.[0m
+                  [0mplatform.local[0m
+                [36m</span>[39m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"form-field__note"[39m
+              [36m>[39m
+                [0mCannot be changed after creation.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"form-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"form-field__label"[39m
+                [33mfor[39m=[32m"tenant-type"[39m
+              [36m>[39m
+                [0mTenant Type[0m
+              [36m</label>[39m
+              [36m<select[39m
+                [33mclass[39m=[32m"form-field__select"[39m
+                [33mid[39m=[32m"tenant-type"[39m
+              [36m>[39m
+                [36m<option[39m
+                  [33mvalue[39m=[32m"AUDIT_COMPANY"[39m
+                [36m>[39m
+                  [0mAudit Company[0m
+                [36m</option>[39m
+                [36m<option[39m
+                  [33mvalue[39m=[32m"CARRIER"[39m
+                [36m>[39m
+                  [0mCarrier[0m
+                [36m</option>[39m
+                [36m<option[39m
+                  [33mvalue[39m=[32m"BROKER"[39m
+                [36m>[39m
+                  [0mBroker[0m
+                [36m</option>[39m
+              [36m</select>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"wizard-step__actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--primary"[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mNext[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ TenantCreationWizard > step 1: auto-generates slug from tenant name input 1023ms
+   ✓ TenantCreationWizard > step 1: slugifies special characters and spaces correctly 782ms
+   ✓ TenantCreationWizard > step 1: rejects reserved subdomain 'www' 882ms
+   ✓ TenantCreationWizard > step 1: rejects slug not matching regex pattern 880ms
+   ✓ TenantCreationWizard > step 1: shows inline error for taken slug from API mock 880ms
+   ✓ TenantCreationWizard > step 1: subdomain preview updates live with slug input 385ms
+   ✓ TenantCreationWizard > step 2: invitation toggle shows/hides in rendered form 1493ms
+   × TenantCreationWizard > step 3: carrier multi-select renders available carriers 1721ms
+     → Unable to find an element with the text: State Farm. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"wizard-page"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-page__header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"wizard-page__title"[39m
+        [36m>[39m
+          [0mNew Tenant[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"wizard-page__subtitle"[39m
+        [36m>[39m
+          [0mComplete all steps to provision and activate a new tenant.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Wizard progress"[39m
+        [33mclass[39m=[32m"wizard-steps"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--complete"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m✓[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mTenant Details[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--complete"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m✓[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mAdmin User[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--active"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m3[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mCarrier Assignment (Optional)[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__optional-hint"[39m
+          [36m>[39m
+            [0mOptional[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m4[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mReview & Activate[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-panel"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-panel__body"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"wizard-step"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"wizard-step__title"[39m
+            [36m>[39m
+              [0mCarrier Assignment (Optional)[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"wizard-step__hint"[39m
+            [36m>[39m
+              [0mCarrier assignment is optional at this stage. You can add carriers after activation from the Tenant Administration panel.[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33maria-label[39m=[32m"Available carriers"[39m
+              [33mclass[39m=[32m"carrier-assign__list"[39m
+              [33mrole[39m=[32m"group"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"carrier-assign__item"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"carrier-assign__checkbox"[39m
+                  [33mtype[39m=[32m"checkbox"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__name"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__code"[39m
+                [36m>[39m
+                  [0mstate-farm[0m
+                [36m</span>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"carrier-assign__item"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"carrier-assign__checkbox"[39m
+                  [33mtype[39m=[32m"checkbox"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__name"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__code"[39m
+                [36m>[39m
+                  [0mtravelers[0m
+                [36m</span>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"btn btn--link"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m+ [0m
+              [0mAdd Carrier[0m
+            [36m</button>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"wizard-step__info-banner"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"wizard-step__info-icon"[39m
+              [36m>[39m
+                [0mℹ[0m
+              [36m</span>[39m
+              [36m<span>[39m
+                [0mNo carriers selected — the tenant will be activated without carriers. Carriers can be added later from the Tenant Administration panel.[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"wizard-step__actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mBack[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--primary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mNext[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+   ✓ TenantCreationWizard > step 4: summary shows all entered values from steps 1–3 1541ms
+   ✓ TenantCreationWizard > step 4: clicking Activate shows provisioning progress overlay 1338ms
+   ✓ TenantCreationWizard > step 4: on API success navigates to TenantDetail (onComplete called) 1840ms
+   ✓ TenantCreationWizard > wizard back navigation preserves step data 1238ms
+ ✓ tests/integration/PoliciesList.test.tsx (6 tests) 2555ms
+   ✓ PoliciesListPage > renders the Policies heading 807ms
+   ✓ PoliciesListPage > renders all 9 column headers from useLabels 460ms
+   ✓ PoliciesListPage > renders policy row data from API 440ms
+   ✓ PoliciesListPage > renders variance_pct as N/A when null (engine off scenario) 306ms
+ ✓ tests/unit/useTheme.test.ts (4 tests) 159ms
+ ✓ tests/unit/NaIndicator.test.tsx (10 tests) 253ms
+stderr | tests/integration/Dashboard.test.tsx > DashboardPage > renders the page title
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ tests/integration/Dashboard.test.tsx (6 tests) 1453ms
+   ✓ DashboardPage > renders the page title 462ms
+ ✓ tests/unit/hooks/useTenantFromSubdomain.test.ts (8 tests) 181ms
+ ✓ tests/unit/useLabels.test.ts (5 tests) 45ms
+ ✓ tests/unit/RiskBadge.test.tsx (9 tests) 150ms
+ ✓ tests/unit/VarianceCard.test.tsx (7 tests) 219ms
+ ✓ tests/unit/utils/fmtSignedPct.test.ts (15 tests) 27ms
+ ✓ tests/unit/KpiCard.test.tsx (4 tests) 142ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/TenantCreationWizard.test.tsx > TenantCreationWizard > renders 4-step progress indicator
+TestingLibraryElementError: Unable to find an element with the text: Carrier Assignment. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"wizard-page"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-page__header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"wizard-page__title"[39m
+        [36m>[39m
+          [0mNew Tenant[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"wizard-page__subtitle"[39m
+        [36m>[39m
+          [0mComplete all steps to provision and activate a new tenant.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Wizard progress"[39m
+        [33mclass[39m=[32m"wizard-steps"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--active"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m1[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mTenant Details[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m2[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mAdmin User[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--optional"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m3[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mCarrier Assignment (Optional)[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__optional-hint"[39m
+          [36m>[39m
+            [0mOptional[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m4[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mReview & Activate[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-panel"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-panel__body"[39m
+        [36m>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"wizard-step"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"wizard-step__title"[39m
+            [36m>[39m
+              [0mTenant Details[0m
+            [36m</h2>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"form-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"form-field__label"[39m
+                [33mfor[39m=[32m"tenant-name"[39m
+              [36m>[39m
+                [0mTenant Name[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33mclass[39m=[32m"form-field__input"[39m
+                [33mid[39m=[32m"tenant-name"[39m
+                [33mrequired[39m=[32m""[39m
+                [33mtype[39m=[32m"text"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"form-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"form-field__label"[39m
+                [33mfor[39m=[32m"tenant-slug"[39m
+              [36m>[39m
+                [0mSubdomain[0m
+              [36m</label>[39m
+              [36m<input[39m
+                [33mclass[39m=[32m"form-field__input "[39m
+                [33mid[39m=[32m"tenant-slug"[39m
+                [33mtype[39m=[32m"text"[39m
+                [33mvalue[39m=[32m""[39m
+              [36m/>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"form-field__hint"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"subdomain-preview"[39m
+                [36m>[39m
+                  [0myour-tenant[0m
+                  [0m.[0m
+                  [0mplatform.local[0m
+                [36m</span>[39m
+              [36m</p>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"form-field__note"[39m
+              [36m>[39m
+                [0mCannot be changed after creation.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"form-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"form-field__label"[39m
+                [33mfor[39m=[32m"tenant-type"[39m
+              [36m>[39m
+                [0mTenant Type[0m
+              [36m</label>[39m
+              [36m<select[39m
+                [33mclass[39m=[32m"form-field__select"[39m
+                [33mid[39m=[32m"tenant-type"[39m
+              [36m>[39m
+                [36m<option[39m
+                  [33mvalue[39m=[32m"AUDIT_COMPANY"[39m
+                [36m>[39m
+                  [0mAudit Company[0m
+                [36m</option>[39m
+                [36m<option[39m
+                  [33mvalue[39m=[32m"CARRIER"[39m
+                [36m>[39m
+                  [0mCarrier[0m
+                [36m</option>[39m
+                [36m<option[39m
+                  [33mvalue[39m=[32m"BROKER"[39m
+                [36m>[39m
+                  [0mBroker[0m
+                [36m</option>[39m
+              [36m</select>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"wizard-step__actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--primary"[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mNext[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ tests/integration/TenantCreationWizard.test.tsx:56:19
+     54|     expect(screen.getAllByText("Tenant Details").length).toBeGreaterTh…
+     55|     expect(screen.getAllByText("Admin User").length).toBeGreaterThanOr…
+     56|     expect(screen.getAllByText("Carrier Assignment").length).toBeGreat…
+       |                   ^
+     57|     expect(screen.getAllByText("Review & Activate").length).toBeGreate…
+     58|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/integration/TenantCreationWizard.test.tsx > TenantCreationWizard > step 3: carrier multi-select renders available carriers
+TestingLibraryElementError: Unable to find an element with the text: State Farm. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"wizard-page"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-page__header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"wizard-page__title"[39m
+        [36m>[39m
+          [0mNew Tenant[0m
+        [36m</h1>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"wizard-page__subtitle"[39m
+        [36m>[39m
+          [0mComplete all steps to provision and activate a new tenant.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<nav[39m
+        [33maria-label[39m=[32m"Wizard progress"[39m
+        [33mclass[39m=[32m"wizard-steps"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--complete"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m✓[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mTenant Details[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--complete"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m✓[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mAdmin User[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item wizard-steps__item--active"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m3[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mCarrier Assignment (Optional)[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__optional-hint"[39m
+          [36m>[39m
+            [0mOptional[0m
+          [36m</span>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-steps__item"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__num"[39m
+          [36m>[39m
+            [0m4[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"wizard-steps__label"[39m
+          [36m>[39m
+            [0mReview & Activate[0m
+          [36m</span>[39m
+        [36m</div>[39m
+      [36m</nav>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"wizard-panel"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"wizard-panel__body"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"wizard-step"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"wizard-step__title"[39m
+            [36m>[39m
+              [0mCarrier Assignment (Optional)[0m
+            [36m</h2>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"wizard-step__hint"[39m
+            [36m>[39m
+              [0mCarrier assignment is optional at this stage. You can add carriers after activation from the Tenant Administration panel.[0m
+            [36m</p>[39m
+            [36m<div[39m
+              [33maria-label[39m=[32m"Available carriers"[39m
+              [33mclass[39m=[32m"carrier-assign__list"[39m
+              [33mrole[39m=[32m"group"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"carrier-assign__item"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"carrier-assign__checkbox"[39m
+                  [33mtype[39m=[32m"checkbox"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__name"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__code"[39m
+                [36m>[39m
+                  [0mstate-farm[0m
+                [36m</span>[39m
+              [36m</label>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"carrier-assign__item"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"carrier-assign__checkbox"[39m
+                  [33mtype[39m=[32m"checkbox"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__name"[39m
+                [36m/>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"carrier-assign__code"[39m
+                [36m>[39m
+                  [0mtravelers[0m
+                [36m</span>[39m
+              [36m</label>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"btn btn--link"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m+ [0m
+              [0mAdd Carrier[0m
+            [36m</button>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"wizard-step__info-banner"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"wizard-step__info-icon"[39m
+              [36m>[39m
+                [0mℹ[0m
+              [36m</span>[39m
+              [36m<span>[39m
+                [0mNo carriers selected — the tenant will be activated without carriers. Carriers can be added later from the Tenant Administration panel.[0m
+              [36m</span>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"wizard-step__actions"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--secondary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mBack[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--primary"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mNext[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/integration/TenantCreationWizard.test.tsx:179:19
+    177|     // Step 3
+    178|     await waitFor(() => expect(screen.getByRole("group")).toBeInTheDoc…
+    179|     expect(screen.getByText("State Farm")).toBeInTheDocument();
+       |                   ^
+    180|     expect(screen.getByText("Travelers")).toBeInTheDocument();
+    181|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/integration/UserManagement.test.tsx > UserManagement > create user modal has role selector limited to AUDITOR and REVIEWER
+TestingLibraryElementError: Unable to find a label with the text of: /Role/i
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"users-list"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"users-list__header"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"users-list__title"[39m
+        [36m>[39m
+          [0mUser Management[0m
+        [36m</h1>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"btn btn--primary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [0mInvite User[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"data-table-wrapper"[39m
+      [36m>[39m
+        [36m<table[39m
+          [33mclass[39m=[32m"data-table"[39m
+        [36m>[39m
+          [36m<thead>[39m
+            [36m<tr>[39m
+              [36m<th>[39m
+                [0mName[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mEmail[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mRole[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mStatus[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mLast Login[0m
+              [36m</th>[39m
+              [36m<th>[39m
+                [0mActions[0m
+              [36m</th>[39m
+            [36m</tr>[39m
+          [36m</thead>[39m
+          [36m<tbody>[39m
+            [36m<tr[39m
+              [33mclass[39m=[32m"data-table__row"[39m
+            [36m>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0mDemo[0m
+                [0m [0m
+                [0mAdmin[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0madmin@demo.example.com[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"badge badge-accent"[39m
+                [36m>[39m
+                  [0mAdmin[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"user-status-badge user-status-badge--suspended"[39m
+                [36m>[39m
+                  [0mSuspended[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"users-list__last-login"[39m
+                [36m>[39m
+                  [0m—[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m/>[39m
+            [36m</tr>[39m
+            [36m<tr[39m
+              [33mclass[39m=[32m"data-table__row"[39m
+            [36m>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0mDemo[0m
+                [0m [0m
+                [0mAuditor[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [0mauditor@demo.example.com[0m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"badge badge-blue"[39m
+                [36m>[39m
+                  [0mAuditor[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"user-status-badge user-status-badge--suspended"[39m
+                [36m>[39m
+                  [0mSuspended[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"users-list__last-login"[39m
+                [36m>[39m
+                  [0m—[0m
+                [36m</span>[39m
+              [36m</td>[39m
+              [36m<td[39m
+                [33mclass[39m=[32m"data-table__cell"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"btn btn--sm btn--secondary"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mEdit[0m
+                [36m</button>[39m
+              [36m</td>[39m
+            [36m</tr>[39m
+          [36m</tbody>[39m
+        [36m</table>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-labelledby[39m=[32m"create-user-title"[39m
+        [33maria-modal[39m=[32m"true"[39m
+        [33mclass[39m=[32m"modal-backdrop"[39m
+        [33mrole[39m=[32m"dialog"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"modal"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"modal__header"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"modal__title"[39m
+              [33mid[39m=[32m"create-user-title"[39m
+            [36m>[39m
+              [0mCreate User[0m
+            [36m</h2>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Close"[39m
+              [33mclass[39m=[32m"modal__close"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0m✕[0m
+            [36m</button>[39m
+          [36m</div>[39m
+          [36m<form[39m
+            [33mclass[39m=[32m"modal__body"[39m
+            [33mnovalidate[39m=[32m""[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"modal__section"[39m
+            [36m>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"modal__section-title"[39m
+              [36m>[39m
+                [0mPersonal Details[0m
+              [36m</h3>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"modal__name-row"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"form-field"[39m
+                [36m>[39m
+                  [36m<label[39m
+                    [33mclass[39m=[32m"form-field__label"[39m
+                    [33mfor[39m=[32m"cu-first"[39m
+                  [36m>[39m
+                    [0mFirst Name[0m
+                  [36m</label>[39m
+                  [36m<input[39m
+                    [33mautocomplete[39m=[32m"given-name"[39m
+                    [33mclass[39m=[32m"form-field__input"[39m
+                    [33mdata-testid[39m=[32m"input-first-name"[39m
+                    [33mid[39m=[32m"cu-first"[39m
+                    [33mtype[39m=[32m"text"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"form-field"[39m
+                [36m>[39m
+                  [36m<label[39m
+                    [33mclass[39m=[32m"form-field__label"[39m
+                    [33mfor[39m=[32m"cu-last"[39m
+                  [36m>[39m
+                    [0mLast Name[0m
+                  [36m</label>[39m
+                  [36m<input[39m
+                    [33mautocomplete[39m=[32m"family-name"[39m
+                    [33mclass[39m=[32m"form-field__input"[39m
+                    [33mdata-testid[39m=[32m"input-last-name"[39m
+                    [33mid[39m=[32m"cu-last"[39m
+                    [33mtype[39m=[32m"text"[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"form-field"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"form-field__label"[39m
+                  [33mfor[39m=[32m"cu-email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mautocomplete[39m=[32m"email"[39m
+                  [33mclass[39m=[32m"form-field__input"[39m
+                  [33mdata-testid[39m=[32m"input-email"[39m
+                  [33mid[39m=[32m"cu-email"[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"modal__section"[39m
+            [36m>[39m
+              [36m<h3[39m
+                [33mclass[39m=[32m"modal__section-title"[39m
+              [36m>[39m
+                [0mRole & Permissions[0m
+              [36m</h3>[39m
+              [36m<div[39m
+                [33mstyle[39m=[32m"display: flex; flex-direction: column; gap: var(--space-2);"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"modal__role-option modal__role-option--selected"[39m
+                  [33mdata-testid[39m=[32m"role-option-auditor"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"modal__role-option-header"[39m
+                  [36m>[39m
+                    [36m<input[39m
+                      [33mchecked[39m=[32m""[39m
+                      [33mname[39m=[32m"role"[39m
+                      [33mtype[39m=[32m"radio"[39m
+                      [33mvalue[39m=[32m"AUDITOR"[39m
+                    [36m/>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"modal__role-option-label"[39m
+                    [36m>[39m
+                      [0mAuditor[0m
+                    [36m</span>[39m
+                  [36m</div>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"modal__role-option-description"[39m
+                  [36m>[39m
+                    [0mCan upload files and trigger calculations.[0m
+                  [36m</p>[39m
+                [36m</label>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"modal__role-option"[39m
+                  [33mdata-testid[39m=[32m"role-option-reviewer"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"modal__role-option-header"[39m
+                  [36m>[39m
+                    [36m<input[39m
+                      [33mname[39m=[32m"role"[39m
+                      [33mtype[39m=[32m"radio"[39m
+                      [33mvalue[39m=[32m"REVIEWER"[39m
+                    [36m/>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"modal__role-option-label"[39m
+                    [36m>[39m
+                      [0mReviewer[0m
+                    [36m</span>[39m
+                  [36m</div>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"modal__role-option-description"[39m
+                  [36m>[39m
+                    [0mRead-only. Can view policies and reports.[0m
+                  [36m</p>[39m
+                [36m</label>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"modal__footer"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--ghost"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mCancel[0m
+              [36m</button>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"btn btn--primary"[39m
+                [33mdata-testid[39m=[32m"btn-send-invitation"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSend Invitation →[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</form>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/integration/UserManagement.test.tsx:105:31
+    103|     await user.click(screen.getByRole("button", { name: /invite user/i…
+    104| 
+    105|     const roleSelect = screen.getByLabelText(/Role/i) as HTMLSelectEle…
+       |                               ^
+    106|     const options = Array.from(roleSelect.options).map((o) => o.value);
+    107|     expect(options).toContain("AUDITOR");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/integration/UserManagement.test.tsx > UserManagement > REVIEWER cannot see Invite User button
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <button
+  class="btn btn--primary"
+  type="button"
+>
+  Invite User
+</button> instead
+ ❯ tests/integration/UserManagement.test.tsx:137:72
+    135|     );
+    136|     // REVIEWER should not see the Invite User button
+    137|     expect(screen.queryByRole("button", { name: /invite user/i })).not…
+       |                                                                        ^
+    138|   });
+    139| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+ Test Files  2 failed | 22 passed (24)
+      Tests  4 failed | 200 passed (204)
+   Start at  06:18:01
+   Duration  29.46s (transform 19.35s, setup 26.25s, collect 49.93s, tests 49.77s, environment 48.82s, prepare 7.79s)
+

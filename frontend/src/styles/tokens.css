@@ -1,0 +1,105 @@
+/**
+ * WC Premium Audit Platform — Design Token System
+ * Addendum S4 — Default Dark (system theme, theme_id = 1)
+ *
+ * CRITICAL: No hardcoded hex colours outside of useTheme.ts.
+ * All components consume these variables ONLY.
+ * The useTheme hook overwrites these on :root when the theme changes.
+ */
+
+:root {
+  /* ── Core palette ────────────────────────────────────────────────────── */
+  --bg:            #0f1117;
+  --surface:       #181c27;
+  --surface-2:     #1e2436;
+  --border:        #2a2f45;
+
+  /* ── Typography ──────────────────────────────────────────────────────── */
+  --text-primary:  #e8ecf4;
+  --text-muted:    #7a84a0;
+
+  /* ── Brand ───────────────────────────────────────────────────────────── */
+  --brand:         #4ade80;
+  --brand-dark:    #15803d;
+
+  /* ── Accent ──────────────────────────────────────────────────────────── */
+  --accent:        #818cf8;
+
+  /* ── Semantic colours ────────────────────────────────────────────────── */
+  --color-green:   #22c55e;
+  --color-amber:   #f59e0b;
+  --color-red:     #ef4444;
+  --color-blue:    #60a5fa;
+
+  /* ── Short-form semantic aliases (match portal reference tokens) ─── */
+  /* Components may use either --green or --color-green; both resolve identically */
+  --green:         #22c55e;
+  --amber:         #f59e0b;
+  --red:           #ef4444;
+  --blue:          #60a5fa;
+
+  /* ── Typography scale ────────────────────────────────────────────────── */
+  /* Maps to DM Sans sizes used throughout the reference portal */
+  --text-xs:    11px;   /* stat-label, badge font-size */
+  --text-sm:    13px;   /* body / table / nav-link */
+  --text-base:  14px;   /* meta-val, default body */
+  --text-lg:    15px;   /* section-title */
+  --text-xl:    18px;   /* pill-val */
+  --text-2xl:   22px;   /* page-title */
+
+  /* ── Font families ───────────────────────────────────────────────────── */
+  --font-base: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /* ── Extended surface tokens ─────────────────────────────────────────── */
+  /* --surface-card is the elevated card background (same as --surface in dark theme) */
+  --surface-card:  #181c27;    /* == --surface */
+  --border-strong: #3a4060;    /* slightly brighter than --border for dashed/strong outlines */
+
+  /* ── Text aliases ────────────────────────────────────────────────────── */
+  --text-secondary: #a0aabf;   /* between --text-primary and --text-muted */
+  --text-inverse:   #000000;   /* text on bright brand backgrounds (btn-primary) */
+
+  /* ── Derived / composite ─────────────────────────────────────────────── */
+  --surface-hover: color-mix(in srgb, var(--surface-2) 90%, var(--brand) 10%);
+  --border-focus:  var(--accent);
+
+  /* ── Shadows ─────────────────────────────────────────────────────────── */
+  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.6);
+
+  /* ── Radii ───────────────────────────────────────────────────────────── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+
+  /* ── Spacing ─────────────────────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Transitions ─────────────────────────────────────────────────────── */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 350ms ease;
+
+  /* ── Z-index scale ───────────────────────────────────────────────────── */
+  --z-base:    0;
+  --z-raised:  10;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-toast:   300;
+
+  /* ── Semantic error tokens ───────────────────────────────────────────── */
+  --error:        var(--red);
+  --error-subtle: color-mix(in srgb, var(--red) 15%, var(--surface) 85%);
+}

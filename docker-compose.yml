@@ -1,0 +1,467 @@
+# # ---------------------------------------------------------------------------
+# # WC Premium Audit Platform — Development Environment — Phase 5
+# #
+# # Usage:
+# #   docker-compose up --build
+# #
+# # Startup order:
+# #   1. db        → postgres creates auditplatform + keycloak DBs
+# #   2. redis     → redis starts
+# #   3. minio     → MinIO S3-compatible object store starts
+# #   4. minio-init → creates audit-platform-uploads bucket
+# #   5. keycloak  → imports realm, takes ~90-120s to become healthy
+# #   6. backend   → runs Alembic migrations, starts uvicorn
+# #   7. frontend  → Vite dev server starts
+# #
+# # Login credentials (infra/keycloak/audit-platform-realm.json):
+# #   superadmin    / admin123    → SUPER_ADMIN
+# #   demo-admin    / admin123    → TENANT_ADMIN  (tenant: demo)
+# #   demo-auditor  / auditor123  → AUDITOR       (tenant: demo)
+# #   demo-reviewer / reviewer123 → REVIEWER      (tenant: demo)
+# #
+# # MinIO Console: http://localhost:9001 (minioadmin / minioadmin)
+# # ---------------------------------------------------------------------------
+
+# services:
+
+#   # -------------------------------------------------------------------------
+#   # PostgreSQL 16
+#   # -------------------------------------------------------------------------
+#   db:
+#     image: postgres:16-alpine
+#     container_name: audit_platform_db
+#     restart: unless-stopped
+#     environment:
+#       POSTGRES_USER: auditplatform
+#       POSTGRES_PASSWORD: auditplatform_dev
+#       POSTGRES_DB: auditplatform
+#       POSTGRES_MULTIPLE_DATABASES: auditplatform,keycloak
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#       - ./infra/postgres/create-multiple-databases.sh:/docker-entrypoint-initdb.d/01-create-multiple-databases.sh:ro
+#     ports:
+#       - "5432:5432"
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U auditplatform -d auditplatform"]
+#       interval: 5s
+#       timeout: 5s
+#       retries: 10
+#       start_period: 10s
+
+#   # -------------------------------------------------------------------------
+#   # Redis 7
+#   # -------------------------------------------------------------------------
+#   redis:
+#     image: redis:7-alpine
+#     container_name: audit_platform_redis
+#     restart: unless-stopped
+#     volumes:
+#       - redis_data:/data
+#     healthcheck:
+#       test: ["CMD", "redis-cli", "ping"]
+#       interval: 5s
+#       timeout: 3s
+#       retries: 10
+#       start_period: 5s
+
+#   # -------------------------------------------------------------------------
+#   # MinIO — S3-compatible local object storage for reports and uploads
+#   # Phase 5: All generated report files are stored here.
+#   # Console UI: http://localhost:9001
+#   # -------------------------------------------------------------------------
+#   minio:
+#     image: minio/minio:latest
+#     container_name: audit_platform_minio
+#     restart: unless-stopped
+#     command: server /data --console-address ":9001"
+#     environment:
+#       MINIO_ROOT_USER: minioadmin
+#       MINIO_ROOT_PASSWORD: minioadmin
+#     volumes:
+#       - minio_data:/data
+#     ports:
+#       - "9000:9000"    # S3 API
+#       - "9001:9001"    # MinIO Console UI
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#       start_period: 10s
+
+#   # -------------------------------------------------------------------------
+#   # MinIO Init — creates the audit-platform-uploads bucket on first boot
+#   # -------------------------------------------------------------------------
+#   minio-init:
+#     image: minio/mc:latest
+#     container_name: audit_platform_minio_init
+#     depends_on:
+#       minio:
+#         condition: service_healthy
+#     entrypoint: >
+#       /bin/sh -c "
+#         mc alias set local http://minio:9000 minioadmin minioadmin;
+#         mc mb local/audit-platform-uploads --ignore-existing;
+#         mc anonymous set download local/audit-platform-uploads;
+#         echo 'MinIO bucket created.';
+#       "
+
+#   # -------------------------------------------------------------------------
+#   # Keycloak 24
+#   # -------------------------------------------------------------------------
+#   keycloak:
+#     build:
+#       context: ./infra/keycloak
+#       dockerfile: Dockerfile
+#     container_name: audit_platform_keycloak
+#     restart: unless-stopped
+#     command: start-dev --import-realm
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     environment:
+#       KEYCLOAK_ADMIN: admin
+#       KEYCLOAK_ADMIN_PASSWORD: admin
+#       KC_DB: postgres
+#       KC_DB_URL: jdbc:postgresql://db:5432/keycloak
+#       KC_DB_USERNAME: auditplatform
+#       KC_DB_PASSWORD: auditplatform_dev
+#       KC_HTTP_PORT: 8080
+#       KC_HOSTNAME_STRICT: "false"
+#       KC_HOSTNAME_STRICT_HTTPS: "false"
+#       KC_HEALTH_ENABLED: "true"
+#       KC_HOSTNAME_URL: "http://localhost:8080"
+#     volumes:
+#       - ./infra/keycloak:/opt/keycloak/data/import
+#     ports:
+#       - "8080:8080"
+#     healthcheck:
+#       test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q 'UP'"]
+#       interval: 15s
+#       timeout: 10s
+#       retries: 20
+#       start_period: 120s
+
+#   # -------------------------------------------------------------------------
+#   # Backend — FastAPI
+#   # -------------------------------------------------------------------------
+#   backend:
+#     build:
+#       context: ./backend
+#       dockerfile: Dockerfile
+#     container_name: audit_platform_backend
+#     restart: unless-stopped
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#       redis:
+#         condition: service_healthy
+#       keycloak:
+#         condition: service_healthy
+#       minio:
+#         condition: service_healthy
+#     environment:
+#       DATABASE_URL: "postgresql+asyncpg://auditplatform:auditplatform_dev@db:5432/auditplatform"
+#       REDIS_URL: "redis://redis:6379/0"
+#       KEYCLOAK_URL: "http://keycloak:8080"
+#       KEYCLOAK_REALM: "audit-platform"
+#       KEYCLOAK_CLIENT_ID: "audit-platform-backend"
+#       KEYCLOAK_CLIENT_SECRET: "audit-platform-backend-secret"
+#       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+#       # S3 / MinIO — Phase 5
+#       S3_ENDPOINT_URL: "http://minio:9000"
+#       AWS_ACCESS_KEY_ID: "minioadmin"
+#       AWS_SECRET_ACCESS_KEY: "minioadmin"
+#       AWS_REGION: "us-east-1"
+#       S3_BUCKET: "audit-platform-uploads"
+#       ENVIRONMENT: "development"
+#       LOG_LEVEL: "DEBUG"
+#       PLATFORM_DOMAIN: "localhost"
+#       SKIP_JWT_VERIFICATION: "${SKIP_JWT_VERIFICATION:-false}"
+#     ports:
+#       - "8000:8000"
+#     volumes:
+#       - ./backend:/app
+#     command: >
+#       sh -c "
+#         echo 'Running Alembic migrations...' &&
+#         alembic upgrade head &&
+#         echo 'Migrations complete. Starting server...' &&
+#         uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level info
+#       "
+#     healthcheck:
+#       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" 2>/dev/null || exit 1"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 10
+#       start_period: 180s
+
+#   # -------------------------------------------------------------------------
+#   # Frontend — Vite Dev Server
+#   # -------------------------------------------------------------------------
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     container_name: audit_platform_frontend
+#     restart: unless-stopped
+#     depends_on:
+#       backend:
+#         condition: service_healthy
+#     environment:
+#       VITE_BACKEND_URL: "http://backend:8000"
+#       VITE_KEYCLOAK_URL: "http://localhost:8080"
+#       VITE_KEYCLOAK_REALM: "audit-platform"
+#       VITE_KEYCLOAK_CLIENT_ID: "audit-platform-frontend"
+#       VITE_PLATFORM_DOMAIN: "localhost"
+#       VITE_SKIP_AUTH: "${SKIP_JWT_VERIFICATION:-false}"
+#     ports:
+#       - "5173:5173"
+#     volumes:
+#       - ./frontend:/app
+#       - /app/node_modules
+#     command: npm run dev -- --host
+
+# volumes:
+#   postgres_data:
+#     driver: local
+#   redis_data:
+#     driver: local
+#   minio_data:
+#     driver: local
+
+# ---------------------------------------------------------------------------
+# WC Premium Audit Platform — Development Environment — Phase 5
+#
+# Usage:
+#   docker-compose up --build
+#
+# Startup order:
+#   1. db        → postgres creates auditplatform + keycloak DBs
+#   2. redis     → redis starts
+#   3. minio     → MinIO S3-compatible object store starts
+#   4. minio-init → creates audit-platform-uploads bucket
+#   5. keycloak  → imports realm, takes ~90-120s to become healthy
+#   6. backend   → runs Alembic migrations, starts uvicorn
+#   7. frontend  → Vite dev server starts
+#
+# Login credentials (infra/keycloak/audit-platform-realm.json):
+#   superadmin    / admin123    → SUPER_ADMIN
+#   demo-admin    / admin123    → TENANT_ADMIN  (tenant: demo)
+#   demo-auditor  / auditor123  → AUDITOR       (tenant: demo)
+#   demo-reviewer / reviewer123 → REVIEWER      (tenant: demo)
+#
+# MinIO Console: http://localhost:9001 (minioadmin / minioadmin)
+# ---------------------------------------------------------------------------
+
+services:
+
+  # -------------------------------------------------------------------------
+  # PostgreSQL 16
+  # -------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: audit_platform_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auditplatform
+      POSTGRES_PASSWORD: auditplatform_dev
+      POSTGRES_DB: auditplatform
+      POSTGRES_MULTIPLE_DATABASES: auditplatform,keycloak
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/create-multiple-databases.sh:/docker-entrypoint-initdb.d/01-create-multiple-databases.sh:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditplatform -d auditplatform"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # -------------------------------------------------------------------------
+  # Redis 7
+  # -------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: audit_platform_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  # -------------------------------------------------------------------------
+  # MinIO — S3-compatible local object storage for reports and uploads
+  # Phase 5: All generated report files are stored here.
+  # Console UI: http://localhost:9001
+  # -------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: audit_platform_minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"    # S3 API
+      - "9001:9001"    # MinIO Console UI
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # -------------------------------------------------------------------------
+  # MinIO Init — creates the audit-platform-uploads bucket on first boot
+  # -------------------------------------------------------------------------
+  minio-init:
+    image: minio/mc:latest
+    container_name: audit_platform_minio_init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9000 minioadmin minioadmin;
+        mc mb local/audit-platform-uploads --ignore-existing;
+        mc anonymous set download local/audit-platform-uploads;
+        echo 'MinIO bucket created.';
+      "
+
+  # -------------------------------------------------------------------------
+  # Keycloak 24
+  # -------------------------------------------------------------------------
+  keycloak:
+    build:
+      context: ./infra/keycloak
+      dockerfile: Dockerfile
+    container_name: audit_platform_keycloak
+    restart: unless-stopped
+    command: start-dev --import-realm
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/keycloak
+      KC_DB_USERNAME: auditplatform
+      KC_DB_PASSWORD: auditplatform_dev
+      KC_HTTP_PORT: 8080
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HEALTH_ENABLED: "true"
+      KC_HOSTNAME_URL: "http://localhost:8080"
+    volumes:
+      - ./infra/keycloak:/opt/keycloak/data/import
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q 'UP'"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+
+  # -------------------------------------------------------------------------
+  # Backend — FastAPI
+  # -------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: audit_platform_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://auditplatform:auditplatform_dev@db:5432/auditplatform"
+      REDIS_URL: "redis://redis:6379/0"
+      KEYCLOAK_URL: "http://keycloak:8080"
+      KEYCLOAK_REALM: "audit-platform"
+      KEYCLOAK_CLIENT_ID: "audit-platform-backend"
+      KEYCLOAK_CLIENT_SECRET: "audit-platform-backend-secret"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      LLM_KEY_ENCRYPTION_SECRET: "${LLM_KEY_ENCRYPTION_SECRET}"
+      # S3 / MinIO — Phase 5
+      S3_ENDPOINT_URL: "http://minio:9000"
+      # S3_PUBLIC_URL rewrites the internal minio:9000 hostname in presigned
+      # URLs to localhost:9000 so the browser can actually reach the file.
+      S3_PUBLIC_URL: "http://localhost:9000"
+      AWS_ACCESS_KEY_ID: "minioadmin"
+      AWS_SECRET_ACCESS_KEY: "minioadmin"
+      AWS_REGION: "us-east-1"
+      S3_BUCKET: "audit-platform-uploads"
+      ENVIRONMENT: "development"
+      LOG_LEVEL: "DEBUG"
+      PLATFORM_DOMAIN: "localhost"
+      SKIP_JWT_VERIFICATION: "${SKIP_JWT_VERIFICATION:-false}"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "
+        echo 'Running Alembic migrations...' &&
+        alembic upgrade head &&
+        echo 'Migrations complete. Starting server...' &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level info
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" 2>/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 180s
+
+  # -------------------------------------------------------------------------
+  # Frontend — Vite Dev Server
+  # -------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: audit_platform_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      VITE_BACKEND_URL: "http://backend:8000"
+      VITE_KEYCLOAK_URL: "http://localhost:8080"
+      VITE_KEYCLOAK_REALM: "audit-platform"
+      VITE_KEYCLOAK_CLIENT_ID: "audit-platform-frontend"
+      VITE_PLATFORM_DOMAIN: "localhost"
+      VITE_SKIP_AUTH: "${SKIP_JWT_VERIFICATION:-false}"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local

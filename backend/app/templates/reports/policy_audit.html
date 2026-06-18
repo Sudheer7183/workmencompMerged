@@ -1,0 +1,225 @@
+{% extends "reports/base.html" %}
+
+{% block content %}
+<h1>Individual Policy Audit Report</h1>
+
+<!-- ── Policy Information ─────────────────────────────────────────────────── -->
+<h2>Policy Information</h2>
+<table>
+  <tr>
+    <th style="width:20%">Policy Number</th>
+    <td style="width:30%">{{ policy.policy_number }}</td>
+    <th style="width:20%">Insured Name</th>
+    <td style="width:30%">{{ policy.insured_name }}</td>
+  </tr>
+  <tr>
+    <th>State</th>
+    <td>{{ policy.state_code or '—' }}</td>
+    <th>Policy Status</th>
+    <td>{{ policy.policy_status }}</td>
+  </tr>
+  <tr>
+    <th>Effective Date</th>
+    <td>{{ policy.effective_date or '—' }}</td>
+    <th>Expiration Date</th>
+    <td>{{ policy.expiration_date or '—' }}</td>
+  </tr>
+  <tr>
+    <th>Payment Frequency</th>
+    <td>{{ policy.payment_frequency or '—' }}</td>
+    <th>Owner Status</th>
+    <td>{{ policy.owner_status or '—' }}</td>
+  </tr>
+  <tr>
+    <th>Audit Status</th>
+    <td>{{ policy.audit_status or '—' }}</td>
+    <th>Risk Level</th>
+    <td>
+      {% if policy.risk_level %}
+        {{ policy.risk_level }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+  </tr>
+  <tr>
+    <th>Premium as Written</th>
+    <td class="mono">{{ policy.premium_written | currency }}</td>
+    <th>Total Est. Payroll</th>
+    <td class="mono">
+      {% if policy.total_est_payroll is not none %}
+        {{ policy.total_est_payroll | currency }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+  </tr>
+</table>
+
+<!-- ── Premium Variance ───────────────────────────────────────────────────── -->
+{% if premium_variance %}
+<h2>Premium Variance</h2>
+<div class="metric-grid">
+  <div class="metric-card">
+    <div class="metric-card__label">Actual Premium to Date</div>
+    <div class="metric-card__value">{{ premium_variance.actual_premium | currency }}</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-card__label">Est Premium to End Date</div>
+    <div class="metric-card__value">{{ premium_variance.est_premium_end | currency }}</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-card__label">Variance ($)</div>
+    <div class="metric-card__value {% if premium_variance.variance_amount >= 0 %}pos-val{% else %}neg-val{% endif %}">
+      {{ premium_variance.variance_amount | currency }}
+    </div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-card__label">Actual % of Est Premium</div>
+    <div class="metric-card__value">
+      {% if premium_variance.variance_pct is not none %}
+        {{ premium_variance.variance_pct | pct }}
+      {% else %}
+        <span class="na-value" style="font-size:10pt">N/A</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- ── Payroll Variance ───────────────────────────────────────────────────── -->
+{% if payroll_variances %}
+<h2>Payroll Variance by Period</h2>
+<table>
+  <tr>
+    <th>Period Start</th>
+    <th>Period End</th>
+    <th>Frequency</th>
+    <th>Est Payroll</th>
+    <th>Act Reported</th>
+    <th>Reported Over/Under</th>
+    <th>Reported %</th>
+  </tr>
+  {% for r in payroll_variances %}
+  <tr>
+    <td>{{ r.period_start or '—' }}</td>
+    <td>{{ r.period_end or '—' }}</td>
+    <td>{{ r.payment_frequency or '—' }}</td>
+    <td class="mono">{{ r.est_payroll | currency }}</td>
+    <td class="mono">{{ r.actual_reported | currency }}</td>
+    <td class="mono {% if r.reported_over_under >= 0 %}pos-val{% else %}neg-val{% endif %}">
+      {{ r.reported_over_under | currency }}
+    </td>
+    <td>
+      {% if r.reported_pct is not none %}
+        {{ r.reported_pct | pct }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<!-- ── Class Code Variance ────────────────────────────────────────────────── -->
+{% if class_codes %}
+<h2>Class Code Variance</h2>
+<table>
+  <tr>
+    <th>State</th>
+    <th>Class Code</th>
+    <th>Est Payroll</th>
+    <th>Act Reported</th>
+    <th>Rep Over/Under</th>
+    <th>Rep %</th>
+    <th>Act Classified</th>
+    <th>Class Over/Under</th>
+    <th>Class %</th>
+  </tr>
+  {% for r in class_codes %}
+  <tr>
+    <td>{{ r.state_code }}</td>
+    <td>{{ r.class_code }}</td>
+    <td class="mono">{{ r.est_payroll | currency }}</td>
+    <td class="mono">{{ r.actual_reported | currency }}</td>
+    <td class="mono {% if r.reported_over_under >= 0 %}pos-val{% else %}neg-val{% endif %}">
+      {{ r.reported_over_under | currency }}
+    </td>
+    <td>
+      {% if r.reported_pct is not none %}
+        {{ r.reported_pct | pct }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+    <td class="mono">{{ r.actual_classified | currency }}</td>
+    <td class="mono {% if r.classified_over_under >= 0 %}pos-val{% else %}neg-val{% endif %}">
+      {{ r.classified_over_under | currency }}
+    </td>
+    <td>
+      {% if r.classified_pct is not none %}
+        {{ r.classified_pct | pct }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<!-- ── Missing Payrolls ───────────────────────────────────────────────────── -->
+{% if missing_payrolls %}
+<h2>Missing Payrolls</h2>
+<table>
+  <tr>
+    <th>Expected Period Start</th>
+    <th>Expected Period End</th>
+    <th>Days Overdue</th>
+  </tr>
+  {% for r in missing_payrolls %}
+  <tr>
+    <td>{{ r.expected_period_start }}</td>
+    <td>{{ r.expected_period_end }}</td>
+    <td>{{ r.days_overdue }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<!-- ── Zero Payrolls ─────────────────────────────────────────────────────── -->
+{% if zero_payrolls %}
+<h2>Zero Payroll Reports</h2>
+<table>
+  <tr>
+    <th>Report Date</th>
+    <th>Reason</th>
+    <th>Payroll Vendor</th>
+    <th>SPRS?</th>
+    <th>Agency</th>
+  </tr>
+  {% for r in zero_payrolls %}
+  <tr>
+    <td>{{ r.report_date }}</td>
+    <td>{{ r.reason_code or r.other_reason or '—' }}</td>
+    <td>{{ r.payroll_vendor or '—' }}</td>
+    <td>{{ 'Yes' if r.sprs_flag else 'No' }}</td>
+    <td>{{ r.agency_name or '—' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<!-- ── AI Narrative ───────────────────────────────────────────────────────── -->
+{% if narrative %}
+<h2>Audit Narrative</h2>
+{% if narrative_is_fallback %}
+<p style="font-size:8pt; color:#E67E22; margin-bottom:4pt;">
+  &#9888; This narrative was generated using a template (AI service was unavailable at time of audit run).
+</p>
+{% endif %}
+<p style="font-size:9pt; line-height:1.6; color:#2C3E50; white-space:pre-wrap;">{{ narrative }}</p>
+{% endif %}
+
+{% endblock %}

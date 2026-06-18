@@ -1,0 +1,140 @@
+{% extends "reports/base.html" %}
+
+{% block page_override %}
+<style>
+  /*
+   * Policy list report — landscape A4 to prevent column overflow.
+   * This override is scoped to this template only.
+   * The policy_audit (detail) template is NOT affected.
+   */
+  @page {
+    size: A4 landscape;
+    margin: 15mm 12mm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 8pt;
+      color: #566573;
+    }
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+  }
+
+  col.col-policy   { width: 12%; }
+  col.col-insured  { width: 18%; }
+  col.col-state    { width: 5%; }
+  col.col-eff      { width: 9%; }
+  col.col-exp      { width: 9%; }
+  col.col-status   { width: 8%; }
+  col.col-premium  { width: 10%; }
+  col.col-var-amt  { width: 10%; }
+  col.col-var-pct  { width: 7%; }
+  col.col-risk     { width: 6%; }
+  col.col-audit    { width: 6%; }
+
+  th, td {
+    padding: 4pt 5pt;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td.mono { font-family: Courier New, monospace; font-size: 8pt; }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Policy Book Summary</h1>
+
+<!-- ── Summary metrics ───────────────────────────────────────────────────── -->
+<div class="metric-grid">
+  <div class="metric-card">
+    <div class="metric-card__label">Total Policies</div>
+    <div class="metric-card__value">{{ policies | length }}</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-card__label">Total Premium Written</div>
+    <div class="metric-card__value">{{ total_premium_written | currency }}</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-card__label">High Risk Policies</div>
+    <div class="metric-card__value {% if high_risk_count > 0 %}neg-val{% endif %}">
+      {{ high_risk_count }}
+    </div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-card__label">Open Audits</div>
+    <div class="metric-card__value">{{ open_audit_count }}</div>
+  </div>
+</div>
+
+<!-- ── Policy list ────────────────────────────────────────────────────────── -->
+<h2>All Policies</h2>
+<table>
+  <colgroup>
+    <col class="col-policy">
+    <col class="col-insured">
+    <col class="col-state">
+    <col class="col-eff">
+    <col class="col-exp">
+    <col class="col-status">
+    <col class="col-premium">
+    <col class="col-var-amt">
+    <col class="col-var-pct">
+    <col class="col-risk">
+    <col class="col-audit">
+  </colgroup>
+  <tr>
+    <th>Policy #</th>
+    <th>Insured Name</th>
+    <th>St</th>
+    <th>Effective</th>
+    <th>Expiration</th>
+    <th>Status</th>
+    <th>Premium</th>
+    <th>Variance ($)</th>
+    <th>Var %</th>
+    <th>Risk</th>
+    <th>Audit</th>
+  </tr>
+  {% for p in policies %}
+  <tr>
+    <td>{{ p.policy_number }}</td>
+    <td>{{ p.insured_name }}</td>
+    <td>{{ p.state_code or '—' }}</td>
+    <td>{{ p.effective_date or '—' }}</td>
+    <td>{{ p.expiration_date or '—' }}</td>
+    <td>{{ p.policy_status }}</td>
+    <td class="mono">{{ p.premium_written | currency }}</td>
+    <td class="mono {% if p.variance_amount is not none %}{% if p.variance_amount >= 0 %}pos-val{% else %}neg-val{% endif %}{% endif %}">
+      {% if p.variance_amount is not none %}
+        {{ p.variance_amount | currency }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+    <td class="mono">
+      {% if p.variance_pct is not none %}
+        {{ p.variance_pct | pct }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+    <td>
+      {% if p.risk_level %}
+        {{ p.risk_level }}
+      {% else %}
+        <span class="na-value">N/A</span>
+      {% endif %}
+    </td>
+    <td>{{ p.audit_status or '—' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,225 @@
+{
+  "id": "audit-platform",
+  "realm": "audit-platform",
+  "displayName": "Audit Platform",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "clients": [
+    {
+      "clientId": "audit-platform-backend",
+      "name": "Audit Platform Backend",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "audit-platform-backend-secret",
+      "bearerOnly": false,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "protocolMappers": []
+    },
+    {
+      "clientId": "audit-platform-frontend",
+      "name": "Audit Platform Frontend",
+      "enabled": true,
+      "publicClient": true,
+      "bearerOnly": false,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:5173/*",
+        "http://localhost:8000/*",
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://localhost:5173/silent-check-sso.html"
+      ],
+      "webOrigins": [
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://localhost"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "protocolMappers": [
+        {
+          "name": "role-string-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "role",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "role",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "aggregate.attrs": "false"
+          }
+        },
+        {
+          "name": "tenant-slug-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "tenant_slug",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "tenant_slug",
+            "jsonType.label": "String",
+            "multivalued": "false",
+            "aggregate.attrs": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "super_admin",
+        "description": "Platform super administrator"
+      },
+      {
+        "name": "tenant_admin",
+        "description": "Tenant administrator"
+      },
+      {
+        "name": "auditor",
+        "description": "Can upload and trigger audit runs"
+      },
+      {
+        "name": "reviewer",
+        "description": "Read-only access"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "superadmin",
+      "email": "superadmin@platform.local",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Super",
+      "lastName": "Admin",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "super_admin"
+      ],
+      "attributes": {
+        "role": [
+          "SUPER_ADMIN"
+        ]
+      }
+    },
+    {
+      "username": "demo-admin",
+      "email": "admin@demo.platform.local",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Admin",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "tenant_admin"
+      ],
+      "attributes": {
+        "tenant_slug": [
+          "demo"
+        ],
+        "role": [
+          "TENANT_ADMIN"
+        ]
+      }
+    },
+    {
+      "username": "demo-auditor",
+      "email": "auditor@demo.platform.local",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Auditor",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "auditor123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "auditor"
+      ],
+      "attributes": {
+        "tenant_slug": [
+          "demo"
+        ],
+        "role": [
+          "AUDITOR"
+        ]
+      }
+    },
+    {
+      "username": "demo-reviewer",
+      "email": "reviewer@demo.platform.local",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Reviewer",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "reviewer123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "reviewer"
+      ],
+      "attributes": {
+        "tenant_slug": [
+          "demo"
+        ],
+        "role": [
+          "REVIEWER"
+        ]
+      }
+    },
+    {
+      "username": "service-account-audit-platform-backend",
+      "enabled": true,
+      "email": "service-account-audit-platform-backend@placeholder.org",
+      "serviceAccountClientId": "audit-platform-backend",
+      "clientRoles": {
+        "realm-management": [
+          "manage-users",
+          "view-users",
+          "manage-realm",
+          "create-client",
+          "query-users",
+          "query-groups"
+        ]
+      }
+    }
+  ]
+}

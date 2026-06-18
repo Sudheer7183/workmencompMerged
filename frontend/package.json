@@ -1,0 +1,53 @@
+{
+  "name": "wc-audit-platform-frontend",
+  "version": "2.0.0",
+  "private": true,
+  "description": "WC Premium Audit Platform — React Frontend",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.0.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.0.0",
+    "@tanstack/react-query": "^5.56.0",
+    "@tanstack/react-query-devtools": "^5.56.0",
+    "@types/jszip": "^3.4.0",
+    "axios": "^1.7.7",
+    "jszip": "^3.10.1",
+    "keycloak-js": "^25.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.1.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.11.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "jsdom": "^25.0.1",
+    "msw": "^2.4.9",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.1"
+  }
+}

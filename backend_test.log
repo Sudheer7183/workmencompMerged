@@ -1,0 +1,425 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-8.3.4, pluggy-1.6.0 -- /usr/local/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /app
+configfile: pyproject.toml
+plugins: anyio-4.13.0, mock-3.14.0, asyncio-0.24.0, cov-6.0.0
+asyncio: mode=Mode.AUTO, default_loop_scope=function
+collecting ... collected 219 items
+
+tests/integration/test_calc_config_api.py::test_get_carrier_calc_config_endpoint_exists PASSED [  0%]
+tests/integration/test_calc_config_api.py::test_put_carrier_calc_config_forbidden_for_reviewer PASSED [  0%]
+tests/integration/test_calc_config_api.py::test_put_carrier_calc_config_engine_off PASSED [  1%]
+tests/integration/test_calc_config_api.py::test_get_tenant_calc_config_endpoint_exists PASSED [  1%]
+tests/integration/test_calc_config_api.py::test_frontend_read_only_calc_config_endpoint_exists PASSED [  2%]
+tests/integration/test_calc_config_api.py::test_resolve_effective_mode_reads_db PASSED [  2%]
+tests/integration/test_calc_config_api.py::test_resolve_effective_mode_engine_on PASSED [  3%]
+tests/integration/test_calc_config_api.py::test_resolve_effective_mode_per_run_override_takes_precedence PASSED [  3%]
+tests/integration/test_calc_rules_api.py::test_list_calc_rules_endpoint_exists PASSED [  4%]
+tests/integration/test_calc_rules_api.py::test_update_locked_rule_returns_403 PASSED [  4%]
+tests/integration/test_calc_rules_api.py::test_invalid_status_transition_returns_409 PASSED [  5%]
+tests/integration/test_calc_rules_api.py::test_submit_changes_status_to_pending_review PASSED [  5%]
+tests/integration/test_calc_rules_api.py::test_expression_test_endpoint_exists PASSED [  5%]
+tests/integration/test_calc_rules_api.py::test_rule_history_endpoint_exists PASSED [  6%]
+tests/integration/test_calc_rules_api.py::test_ai_suggest_endpoint_exists PASSED [  6%]
+tests/integration/test_calc_rules_api.py::test_expression_validation_blocks_import PASSED [  7%]
+tests/integration/test_calc_rules_api.py::test_expression_validation_accepts_valid_expression PASSED [  7%]
+tests/integration/test_calc_rules_api.py::test_expression_validation_blocks_exec PASSED [  8%]
+tests/integration/test_calc_rules_api.py::test_expression_validation_blocks_dunder PASSED [  8%]
+tests/integration/test_dashboard_api.py::test_dashboard_summary_requires_auth PASSED [  9%]
+tests/integration/test_dashboard_api.py::test_dashboard_summary_reviewer_role_passes PASSED [  9%]
+tests/integration/test_dashboard_api.py::test_dashboard_summary_zero_state_when_no_data PASSED [ 10%]
+tests/integration/test_ingestion_api.py::test_upload_requires_auditor_role PASSED [ 10%]
+tests/integration/test_ingestion_api.py::test_upload_rejects_non_xlsx FAILED [ 10%]
+tests/integration/test_ingestion_api.py::test_upload_accepts_valid_xlsx PASSED [ 11%]
+tests/integration/test_ingestion_api.py::test_audit_run_requires_auditor PASSED [ 11%]
+tests/integration/test_ingestion_api.py::test_audit_run_returns_skipped_when_engine_off PASSED [ 12%]
+tests/integration/test_ingestion_phase3.py::test_upload_returns_awaiting_mapping PASSED [ 12%]
+tests/integration/test_ingestion_phase3.py::test_approve_mapping_returns_403_for_reviewer PASSED [ 13%]
+tests/integration/test_ingestion_phase3.py::test_get_run_status_returns_run_fields PASSED [ 13%]
+tests/integration/test_ingestion_phase3.py::test_run_post_approval_is_separate_from_run PASSED [ 14%]
+tests/integration/test_ingestion_phase3.py::test_reject_mapping_endpoint_exists PASSED [ 14%]
+tests/integration/test_multi_tenant_isolation_phase2.py::test_demo_policies_invisible_from_alpha_tenant PASSED [ 15%]
+tests/integration/test_multi_tenant_isolation_phase2.py::test_demo_carrier_config_invisible_from_alpha PASSED [ 15%]
+tests/integration/test_multi_tenant_isolation_phase2.py::test_superadmin_can_switch_schemas_explicitly PASSED [ 15%]
+tests/integration/test_multi_tenant_isolation_phase2.py::test_platform_endpoint_only_reads_public_schema PASSED [ 16%]
+tests/integration/test_multi_tenant_isolation_phase2.py::test_provisioned_alpha_has_all_required_tables PASSED [ 16%]
+tests/integration/test_platform_api.py::test_get_platform_tenants_not_subject_to_tenant_middleware PASSED [ 17%]
+tests/integration/test_platform_api.py::test_post_platform_tenants_requires_super_admin PASSED [ 17%]
+tests/integration/test_platform_api.py::test_post_platform_tenants_creates_schema PASSED [ 18%]
+tests/integration/test_platform_api.py::test_post_platform_carriers_creates_public_carrier PASSED [ 18%]
+tests/integration/test_platform_api.py::test_post_platform_tenant_carriers_writes_to_tenant_schema PASSED [ 19%]
+tests/integration/test_platform_api.py::test_tenant_detail_shows_correct_response PASSED [ 19%]
+tests/integration/test_policies_api.py::test_policy_list_returns_200 FAILED [ 20%]
+tests/integration/test_policies_api.py::test_policy_list_requires_reviewer_role PASSED [ 20%]
+tests/integration/test_policies_api.py::test_policy_detail_returns_404_for_unknown PASSED [ 21%]
+tests/integration/test_policies_api.py::test_variance_pct_null_when_engine_off PASSED [ 21%]
+tests/integration/test_policies_api.py::test_premium_variance_404_when_no_data PASSED [ 21%]
+tests/integration/test_tenant_admin_api.py::test_put_tenant_profile_saves_to_tenant_schema PASSED [ 22%]
+tests/integration/test_tenant_admin_api.py::test_put_tenant_branding_validates_hex_color_too_short PASSED [ 22%]
+tests/integration/test_tenant_admin_api.py::test_put_tenant_branding_validates_hex_color_too_long PASSED [ 23%]
+tests/integration/test_tenant_admin_api.py::test_put_tenant_branding_valid_six_char_hex PASSED [ 23%]
+tests/integration/test_tenant_admin_api.py::test_put_tenant_branding_null_brand_color_accepted PASSED [ 24%]
+tests/integration/test_tenant_admin_api.py::test_post_branding_logo_writes_url_after_s3_confirm PASSED [ 24%]
+tests/integration/test_tenant_admin_api.py::test_post_branding_logo_does_not_write_url_on_s3_failure PASSED [ 25%]
+tests/integration/test_tenant_admin_api.py::test_post_tenant_users_creates_in_keycloak_and_db PASSED [ 25%]
+tests/integration/test_tenant_admin_api.py::test_get_tenant_users_me_returns_correct_role PASSED [ 26%]
+tests/integration/test_tenant_admin_api.py::test_reviewer_cannot_reach_tenant_user_management PASSED [ 26%]
+tests/integration/test_tenant_admin_api.py::test_delete_tenant_user_deactivates_in_keycloak_and_db PASSED [ 26%]
+tests/unit/test_ai_narrative.py::test_fallback_returns_non_empty PASSED  [ 27%]
+tests/unit/test_ai_narrative.py::test_fallback_includes_policy_number PASSED [ 27%]
+tests/unit/test_ai_narrative.py::test_fallback_includes_risk_level PASSED [ 28%]
+tests/unit/test_ai_narrative.py::test_fallback_all_none_does_not_raise PASSED [ 28%]
+tests/unit/test_ai_narrative.py::test_generate_falls_back_on_http_error PASSED [ 29%]
+tests/unit/test_ai_narrative.py::test_generate_returns_api_text_on_success PASSED [ 29%]
+tests/unit/test_auto_mapping_service.py::test_normalise_strips_spaces_and_lowercases PASSED [ 30%]
+tests/unit/test_auto_mapping_service.py::test_normalise_handles_camel_case PASSED [ 30%]
+tests/unit/test_auto_mapping_service.py::test_type_inference_numeric_from_decimal_string PASSED [ 31%]
+tests/unit/test_auto_mapping_service.py::test_type_inference_date_from_iso_date_string PASSED [ 31%]
+tests/unit/test_auto_mapping_service.py::test_type_inference_boolean_from_yes_no PASSED [ 31%]
+tests/unit/test_auto_mapping_service.py::test_type_inference_integer_from_whole_number PASSED [ 32%]
+tests/unit/test_auto_mapping_service.py::test_types_are_compatible_same_type PASSED [ 32%]
+tests/unit/test_auto_mapping_service.py::test_types_are_compatible_integer_numeric PASSED [ 33%]
+tests/unit/test_auto_mapping_service.py::test_types_are_compatible_incompatible_pair PASSED [ 33%]
+tests/unit/test_auto_mapping_service.py::test_pass3_policy_number_fuzzy_match_returns_high_or_medium PASSED [ 34%]
+tests/unit/test_auto_mapping_service.py::test_pass3_fuzzy_match_effective_date_returns_high_or_medium PASSED [ 34%]
+tests/unit/test_auto_mapping_service.py::test_pass4_no_match_returns_unmatched PASSED [ 35%]
+tests/unit/test_auto_mapping_service.py::test_pass1_saved_mapping_returns_high PASSED [ 35%]
+tests/unit/test_auto_mapping_service.py::test_saved_mapping_takes_precedence_over_name_match PASSED [ 36%]
+tests/unit/test_calc_rules_service.py::test_locked_rule_keys_count PASSED [ 36%]
+tests/unit/test_calc_rules_service.py::test_locked_rule_keys_contains_required_entries PASSED [ 36%]
+tests/unit/test_calc_rules_service.py::test_eval_simple_numeric_expression PASSED [ 37%]
+tests/unit/test_calc_rules_service.py::test_eval_expression_with_context PASSED [ 37%]
+tests/unit/test_calc_rules_service.py::test_eval_abs_variance_pct PASSED [ 38%]
+tests/unit/test_calc_rules_service.py::test_eval_returns_none_on_unknown_name PASSED [ 38%]
+tests/unit/test_calc_rules_service.py::test_eval_blocks_import PASSED    [ 39%]
+tests/unit/test_calc_rules_service.py::test_eval_blocks_exec PASSED      [ 39%]
+tests/unit/test_calc_rules_service.py::test_eval_blocks_eval_keyword PASSED [ 40%]
+tests/unit/test_calc_rules_service.py::test_eval_blocks_dunder_access PASSED [ 40%]
+tests/unit/test_calc_rules_service.py::test_eval_blocks_os_module_access PASSED [ 41%]
+tests/unit/test_calc_rules_service.py::test_load_rules_populates_redis_on_first_call PASSED [ 41%]
+tests/unit/test_calc_rules_service.py::test_load_rules_returns_cached_result_without_db_call PASSED [ 42%]
+tests/unit/test_calc_service.py::test_calc_premium_variance_standard PASSED [ 42%]
+tests/unit/test_calc_service.py::test_calc_premium_variance_zero_est_returns_null_pct PASSED [ 42%]
+tests/unit/test_calc_service.py::test_calc_premium_variance_negative PASSED [ 43%]
+tests/unit/test_calc_service.py::test_calc_premium_variance_none_inputs PASSED [ 43%]
+tests/unit/test_calc_service.py::test_calc_payroll_variance_standard PASSED [ 44%]
+tests/unit/test_calc_service.py::test_calc_payroll_variance_zero_est PASSED [ 44%]
+tests/unit/test_calc_service.py::test_assess_risk_high PASSED            [ 45%]
+tests/unit/test_calc_service.py::test_assess_risk_medium_variance_only PASSED [ 45%]
+tests/unit/test_calc_service.py::test_assess_risk_medium_missing_only PASSED [ 46%]
+tests/unit/test_calc_service.py::test_assess_risk_low PASSED             [ 46%]
+tests/unit/test_calc_service.py::test_assess_risk_null_pct_with_no_missing PASSED [ 47%]
+tests/unit/test_calc_service.py::test_check_frequency_monthly PASSED     [ 47%]
+tests/unit/test_calc_service.py::test_check_frequency_weekly PASSED      [ 47%]
+tests/unit/test_calc_service.py::test_check_frequency_none_dates PASSED  [ 48%]
+tests/unit/test_calc_service.py::test_rule_constants_values PASSED       [ 48%]
+tests/unit/test_calc_service.py::test_check_officer_rules_phase1_stub PASSED [ 49%]
+tests/unit/test_calc_service.py::test_calc_premium_variance_exact PASSED [ 49%]
+tests/unit/test_calc_service.py::test_calc_payroll_variance_none_classified PASSED [ 50%]
+tests/unit/test_csv_ingestion.py::test_is_csv_plain_csv PASSED           [ 50%]
+tests/unit/test_csv_ingestion.py::test_is_csv_with_bom_header PASSED     [ 51%]
+tests/unit/test_csv_ingestion.py::test_is_csv_rejects_xlsx_magic PASSED  [ 51%]
+tests/unit/test_csv_ingestion.py::test_is_csv_rejects_xml PASSED         [ 52%]
+tests/unit/test_csv_ingestion.py::test_is_csv_rejects_binary PASSED      [ 52%]
+tests/unit/test_csv_ingestion.py::test_is_csv_tab_delimited PASSED       [ 52%]
+tests/unit/test_csv_ingestion.py::test_is_csv_semicolon_delimited PASSED [ 53%]
+tests/unit/test_csv_ingestion.py::test_auto_mapping_extracts_csv_headers PASSED [ 53%]
+tests/unit/test_csv_ingestion.py::test_auto_mapping_csv_samples_from_first_data_row PASSED [ 54%]
+tests/unit/test_ingestion_error_tracking.py::test_exactly_eight_error_codes PASSED [ 54%]
+tests/unit/test_ingestion_error_tracking.py::test_field_type_mismatch_present PASSED [ 55%]
+tests/unit/test_ingestion_error_tracking.py::test_required_field_null_present PASSED [ 55%]
+tests/unit/test_ingestion_error_tracking.py::test_policy_not_found_present PASSED [ 56%]
+tests/unit/test_ingestion_error_tracking.py::test_policyholder_duplicate_present PASSED [ 56%]
+tests/unit/test_ingestion_error_tracking.py::test_date_parse_failure_present PASSED [ 57%]
+tests/unit/test_ingestion_error_tracking.py::test_mapping_not_found_present PASSED [ 57%]
+tests/unit/test_ingestion_error_tracking.py::test_transform_failure_present PASSED [ 57%]
+tests/unit/test_ingestion_error_tracking.py::test_batch_hard_failure_present PASSED [ 58%]
+tests/unit/test_ingestion_error_tracking.py::test_ingestion_row_error_is_exception PASSED [ 58%]
+tests/unit/test_ingestion_error_tracking.py::test_ingestion_row_error_stores_code PASSED [ 59%]
+tests/unit/test_ingestion_error_tracking.py::test_ingestion_row_error_stores_message PASSED [ 59%]
+tests/unit/test_ingestion_error_tracking.py::test_ingestion_row_error_defaults_empty_row_data PASSED [ 60%]
+tests/unit/test_ingestion_error_tracking.py::test_ingestion_row_error_stores_row_data PASSED [ 60%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[FIELD_TYPE_MISMATCH] PASSED [ 61%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[REQUIRED_FIELD_NULL] PASSED [ 61%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[POLICY_NOT_FOUND] PASSED [ 62%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[POLICYHOLDER_DUPLICATE] PASSED [ 62%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[DATE_PARSE_FAILURE] PASSED [ 63%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[MAPPING_NOT_FOUND] PASSED [ 63%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[TRANSFORM_FAILURE] PASSED [ 63%]
+tests/unit/test_ingestion_error_tracking.py::test_each_code_round_trips[BATCH_HARD_FAILURE] PASSED [ 64%]
+tests/unit/test_ingestion_error_tracking.py::test_all_code_values_are_uppercase_strings PASSED [ 64%]
+tests/unit/test_ingestion_service.py::test_normalise_strips_punctuation PASSED [ 65%]
+tests/unit/test_ingestion_service.py::test_normalise_handles_none PASSED [ 65%]
+tests/unit/test_ingestion_service.py::test_safe_decimal_na_strings PASSED [ 66%]
+tests/unit/test_ingestion_service.py::test_safe_decimal_valid PASSED     [ 66%]
+tests/unit/test_ingestion_service.py::test_run_raises_for_non_xlsx FAILED [ 67%]
+tests/unit/test_keycloak_admin_service.py::test_verify_token_decodes_tenant_slug_claim PASSED [ 67%]
+tests/unit/test_keycloak_admin_service.py::test_verify_token_super_admin_has_null_tenant_slug PASSED [ 68%]
+tests/unit/test_keycloak_admin_service.py::test_verify_token_role_is_single_string_not_array PASSED [ 68%]
+tests/unit/test_keycloak_admin_service.py::test_verify_token_rejects_invalid_signature PASSED [ 68%]
+tests/unit/test_keycloak_admin_service.py::test_verify_token_rejects_expired_token PASSED [ 69%]
+tests/unit/test_keycloak_admin_service.py::test_verify_token_caches_jwks_in_redis PASSED [ 69%]
+tests/unit/test_keycloak_admin_service.py::test_jwks_cache_refreshed_on_kid_not_found PASSED [ 70%]
+tests/unit/test_keycloak_admin_service.py::test_create_tenant_admin_user_sets_tenant_slug_attribute PASSED [ 70%]
+tests/unit/test_keycloak_admin_service.py::test_create_tenant_user_assigns_correct_role PASSED [ 71%]
+tests/unit/test_keycloak_admin_service.py::test_get_admin_token_uses_client_credentials PASSED [ 71%]
+tests/unit/test_mapping_gate.py::test_session_status_is_pending_review_after_auto_mapping PASSED [ 72%]
+tests/unit/test_mapping_gate.py::test_ingestion_run_status_is_awaiting_mapping_after_run PASSED [ 72%]
+tests/unit/test_mapping_gate.py::test_unmatched_proposal_can_be_excluded PASSED [ 73%]
+tests/unit/test_mapping_gate.py::test_unmatched_proposal_blocks_approval_when_not_excluded PASSED [ 73%]
+tests/unit/test_mapping_gate.py::test_approve_requires_tenant_admin_role PASSED [ 73%]
+tests/unit/test_mapping_gate.py::test_approve_succeeds_for_tenant_admin_role PASSED [ 74%]
+tests/unit/test_mapping_gate.py::test_session_tier_counts_sum_to_total_proposals PASSED [ 74%]
+tests/unit/test_mapping_gate.py::test_reject_mapping_marks_run_as_failed PASSED [ 75%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_skipped_row_importable PASSED [ 75%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_rollback_importable PASSED [ 76%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_field_map_importable PASSED [ 76%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_skipped_row_tablename PASSED [ 77%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_rollback_tablename PASSED [ 77%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_field_map_tablename PASSED [ 78%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_skipped_row_has_required_columns PASSED [ 78%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_rollback_has_required_columns PASSED [ 78%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_field_map_has_target_column PASSED [ 79%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_field_map_has_transform_fn PASSED [ 79%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_field_map_no_canonical_column PASSED [ 80%]
+tests/unit/test_orm_models_phase4.py::test_ingestion_field_map_has_all_required_columns PASSED [ 80%]
+tests/unit/test_orm_models_phase4.py::test_phase3_models_still_importable PASSED [ 81%]
+tests/unit/test_rollback_service.py::test_rollback_service_instantiates PASSED [ 81%]
+tests/unit/test_rollback_service.py::test_rollback_service_has_rollback_method PASSED [ 82%]
+tests/unit/test_rollback_service.py::test_rollback_service_has_can_rollback_method PASSED [ 82%]
+tests/unit/test_rollback_service.py::test_rollback_tables_has_five_tables PASSED [ 83%]
+tests/unit/test_rollback_service.py::test_rollback_tables_contains_premium_variance PASSED [ 83%]
+tests/unit/test_rollback_service.py::test_rollback_tables_contains_payroll_variance_policy PASSED [ 84%]
+tests/unit/test_rollback_service.py::test_rollback_tables_contains_payroll_variance_class PASSED [ 84%]
+tests/unit/test_rollback_service.py::test_rollback_tables_contains_zero_payroll PASSED [ 84%]
+tests/unit/test_rollback_service.py::test_rollback_tables_contains_missing_payroll PASSED [ 85%]
+tests/unit/test_rollback_service.py::test_ingestion_runs_not_in_rollback_tables PASSED [ 85%]
+tests/unit/test_rollback_service.py::test_ingestion_errors_not_in_rollback_tables PASSED [ 86%]
+tests/unit/test_rollback_service.py::test_ingestion_skipped_rows_not_in_rollback_tables PASSED [ 86%]
+tests/unit/test_rollback_service.py::test_policies_not_in_rollback_tables PASSED [ 87%]
+tests/unit/test_rollback_service.py::test_policyholders_not_in_rollback_tables PASSED [ 87%]
+tests/unit/test_security.py::test_verify_role_reviewer_passes_reviewer PASSED [ 88%]
+tests/unit/test_security.py::test_verify_role_auditor_passes_reviewer PASSED [ 88%]
+tests/unit/test_security.py::test_verify_role_reviewer_fails_auditor PASSED [ 89%]
+tests/unit/test_security.py::test_verify_role_super_admin_passes_any PASSED [ 89%]
+tests/unit/test_security.py::test_verify_role_tenant_admin_fails_super_admin_requirement PASSED [ 89%]
+tests/unit/test_security.py::test_role_privilege_ordering PASSED         [ 90%]
+tests/unit/test_security.py::test_verify_tenant_matching_slug_passes PASSED [ 90%]
+tests/unit/test_security.py::test_verify_tenant_mismatched_slug_raises_403 PASSED [ 91%]
+tests/unit/test_security.py::test_verify_tenant_super_admin_bypasses PASSED [ 91%]
+tests/unit/test_security.py::test_verify_tenant_no_tenant_state_raises_400 PASSED [ 92%]
+tests/unit/test_security_phase2.py::test_live_jwt_verify_tenant_slug_must_match_subdomain PASSED [ 92%]
+tests/unit/test_security_phase2.py::test_live_jwt_super_admin_bypasses_verify_tenant PASSED [ 93%]
+tests/unit/test_security_phase2.py::test_verify_tenant_passes_when_slugs_match PASSED [ 93%]
+tests/unit/test_security_phase2.py::test_verify_role_reviewer_cannot_access_auditor_resource PASSED [ 94%]
+tests/unit/test_security_phase2.py::test_verify_role_auditor_can_access_reviewer_resource PASSED [ 94%]
+tests/unit/test_security_phase2.py::test_reviewer_cannot_create_users PASSED [ 94%]
+tests/unit/test_security_phase2.py::test_auditor_cannot_access_platform_endpoints PASSED [ 95%]
+tests/unit/test_security_phase2.py::test_user_creation_writes_keycloak_id_to_db PASSED [ 95%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_creates_public_tenants_record PASSED [ 96%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_sets_status_active_on_success PASSED [ 96%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_drops_schema_on_alembic_failure PASSED [ 97%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_soft_deletes_tenant_on_failure PASSED [ 97%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_seeds_22_rules_per_carrier PASSED [ 98%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_seeds_carrier_theme_config PASSED [ 98%]
+tests/unit/test_tenant_provisioning_service.py::test_provision_seeds_tenant_calc_config PASSED [ 99%]
+tests/unit/test_tenant_provisioning_service.py::test_schema_creation_uses_autocommit_connection PASSED [ 99%]
+tests/unit/test_tenant_provisioning_service.py::test_alembic_called_with_target_schema_argument PASSED [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_upload_rejects_non_xlsx _________________________
+
+client = <starlette.testclient.TestClient object at 0x734680323e30>
+app = <fastapi.applications.FastAPI object at 0x734680e63260>
+
+    def test_upload_rejects_non_xlsx(client, app):
+        """CSV file must be rejected — Phase 1 accepts XLSX only."""
+        mock_db = _make_mock_db()
+    
+        async def override_db():
+            yield mock_db
+    
+        app.dependency_overrides[get_current_user] = lambda: _auditor()
+        app.dependency_overrides[get_db] = override_db
+    
+        with (
+            patch("app.tenancy.middleware.TenantMiddleware._resolve_tenant", return_value=_demo_tenant()),
+            patch("app.api.v1.ingestion.verify_carrier_scope", new_callable=AsyncMock),
+        ):
+            resp = client.post(
+                "/api/v1/ingestion/upload",
+                data={"carrier_id": "1", "source_id": "1"},
+                files={"file": ("report.csv", b"policy_number,value\nWC-001,100", "text/csv")},
+                headers={"X-Tenant-Slug": "demo"},
+            )
+>       assert resp.status_code == 422, f"Expected 422, got {resp.status_code}: {resp.text}"
+E       AssertionError: Expected 422, got 500: Internal Server Error
+E       assert 500 == 422
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests/integration/test_ingestion_api.py:101: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-06-08 11:23:24 [debug    ] tenant.middleware.dev_fallback message=X-Tenant-Slug header used for tenant resolution. This path is only valid in local development. slug=demo
+2026-06-08 11:23:24 [debug    ] tenant.resolved                schema=tenant_demo slug=demo
+2026-06-08 11:23:24 [info     ] ingestion.run.created          carrier_id=1 ingestion_mode=calc_engine run_id=None
+debugging fields 2 ['policy_number', 'value'] csv
+2026-06-08 11:23:24 [info     ] DEBUG_FIELDS                   count=2 fields=['policy_number', 'value']
+2026-06-08 11:23:24 [info     ] auto_mapping.session_created   auto_mapped=1 flagged=0 run_id=None session_id=None unmatched=1
+2026-06-08 11:23:24 [info     ] auto_mapping.complete          high=1 low=0 medium=0 run_id=None session_id=None total_fields=2 unmatched=1
+2026-06-08 11:23:24 [info     ] ingestion.awaiting_mapping     run_id=None session_id=None
+2026-06-08 11:23:24 [info     ] ingestion.store_file_bytes.ok  run_id=None size=30
+_________________________ test_policy_list_returns_200 _________________________
+
+client = <starlette.testclient.TestClient object at 0x73467b7d4500>
+app = <fastapi.applications.FastAPI object at 0x7346813850a0>
+
+    def test_policy_list_returns_200(client, app):
+        mock_db = _make_mock_db(
+            scalar_one=1,
+            fetchall=[
+                (1, "WC-001", "Acme Corp", "CA", date(2024, 1, 1),
+                 "Active", Decimal("100000"), Decimal("10000"), Decimal("0.10"), "Medium", "Pending"),
+            ],
+        )
+        _apply_overrides(app, mock_db, _reviewer())
+        with (
+            patch("app.tenancy.middleware.TenantMiddleware._resolve_tenant", return_value=_demo_tenant()),
+            patch("app.api.v1.policies.verify_carrier_scope", new_callable=AsyncMock),
+        ):
+            resp = client.get("/api/v1/policies?carrier_id=1", headers={"X-Tenant-Slug": "demo"})
+>       assert resp.status_code != 500, f"Got 500: {resp.text}"
+E       AssertionError: Got 500: Internal Server Error
+E       assert 500 != 500
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests/integration/test_policies_api.py:71: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-06-08 11:23:26 [debug    ] tenant.middleware.dev_fallback message=X-Tenant-Slug header used for tenant resolution. This path is only valid in local development. slug=demo
+2026-06-08 11:23:26 [debug    ] tenant.resolved                schema=tenant_demo slug=demo
+_________________________ test_run_raises_for_non_xlsx _________________________
+
+    @pytest.mark.asyncio
+    async def test_run_raises_for_non_xlsx():
+        mock_db = AsyncMock()
+        with pytest.raises(ValueError, match="Phase 3 supports XLSX only"):
+>           await svc.run(
+                schema_name="tenant_demo",
+                carrier_id=1,
+                source_id=1,
+                file_bytes=b"not xlsx",
+                file_type="csv",
+                db=mock_db,
+            )
+
+tests/unit/test_ingestion_service.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.ingestion_service.IngestionService object at 0x734681203c80>
+schema_name = 'tenant_demo', carrier_id = 1, source_id = 1
+file_bytes = b'not xlsx', file_type = 'csv'
+db = <AsyncMock id='126746555857904'>, uploaded_by = 'system'
+override_use_engine = None, ingestion_mode = 'calc_engine'
+
+    async def run(
+        self,
+        schema_name: str,
+        carrier_id: int,
+        source_id: int,
+        file_bytes: bytes,
+        file_type: str,
+        db: AsyncSession,
+        uploaded_by: str = "system",
+        override_use_engine: Optional[bool] = None,
+        ingestion_mode: str = "calc_engine",
+    ) -> tuple[int, int]:
+        """Creates ingestion_run + generates mapping proposals. Returns (run_id, session_id)."""
+        print("file type in ingestion", file_type)
+        if file_type not in ("xlsx", "xml"):
+>           raise ValueError(f"Unsupported file type: '{file_type}'. Accepted: xlsx, xml")
+E           ValueError: Unsupported file type: 'csv'. Accepted: xlsx, xml
+
+app/services/ingestion_service.py:3788: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    @pytest.mark.asyncio
+    async def test_run_raises_for_non_xlsx():
+        mock_db = AsyncMock()
+>       with pytest.raises(ValueError, match="Phase 3 supports XLSX only"):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'Phase 3 supports XLSX only'
+E        Input: "Unsupported file type: 'csv'. Accepted: xlsx, xml"
+
+tests/unit/test_ingestion_service.py:57: AssertionError
+----------------------------- Captured stdout call -----------------------------
+file type in ingestion csv
+=============================== warnings summary ===============================
+tests/unit/test_keycloak_admin_service.py::test_verify_token_decodes_tenant_slug_claim
+tests/unit/test_keycloak_admin_service.py::test_verify_token_super_admin_has_null_tenant_slug
+tests/unit/test_keycloak_admin_service.py::test_verify_token_role_is_single_string_not_array
+tests/unit/test_keycloak_admin_service.py::test_verify_token_rejects_expired_token
+tests/unit/test_keycloak_admin_service.py::test_jwks_cache_refreshed_on_kid_not_found
+  /usr/local/lib/python3.12/site-packages/jose/jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = timegm(datetime.utcnow().utctimetuple())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform linux, python 3.12.13-final-0 ----------
+Name                                          Stmts   Miss  Cover   Missing
+---------------------------------------------------------------------------
+app/__init__.py                                   0      0   100%
+app/api/__init__.py                               0      0   100%
+app/api/deps.py                                  17      5    71%   21, 30-32, 41
+app/api/security.py                              68     37    46%   51-87, 100-128, 205-223
+app/api/v1/__init__.py                            2      0   100%
+app/api/v1/carrier_config.py                    271    105    61%   187, 267, 294, 308-325, 379-397, 428, 436-467, 504-507, 521, 536-546, 562-602, 655-668, 686-717, 747-753, 777, 783-810, 829-851
+app/api/v1/dashboard.py                          57      6    89%   208-211, 224-225
+app/api/v1/data_sources.py                      198    125    37%   37-46, 86, 110-125, 140-169, 184-230, 247-262, 280-326, 362, 386-398, 419-452, 468-483
+app/api/v1/ingestion.py                         392    177    55%   1420, 1436, 1443, 1490-1503, 1518-1519, 1536-1571, 1590-1622, 1651-1737, 1764, 1802-1831, 1857-1864, 1876, 1932, 2070-2092, 2125-2146, 2179-2224, 2250-2277, 2305-2339, 2357-2386
+app/api/v1/platform.py                          211     79    63%   74, 160-173, 210, 247, 279-303, 313-320, 330-339, 348-356, 369-376, 420-453, 489, 518-542, 560-596
+app/api/v1/policies.py                          129     76    41%   693-694, 696-697, 762, 807-859, 901-911, 937-958, 987-1031, 1051-1077, 1097-1126, 1146-1239
+app/api/v1/tenant_admin.py                      281     64    77%   160, 191, 268-278, 299-325, 350, 403, 412, 449, 537, 568-591, 607-617, 669, 724-760, 792, 820-832
+app/core/__init__.py                              0      0   100%
+app/core/config.py                               57      4    93%   91, 99, 106, 117
+app/core/database.py                             72     47    35%   308-317, 333-334, 355-373, 382-384, 388-393, 403-411, 414-418, 432-456
+app/core/redis.py                                34     18    47%   26-37, 46-50, 66, 74-80, 93
+app/main.py                                      57     24    58%   25-60, 69-98, 152-153
+app/models/__init__.py                            0      0   100%
+app/models/calc_config.py                        32     32     0%   1-61
+app/models/facts.py                              77     77     0%   1-146
+app/models/ingestion.py                          76      0   100%
+app/models/policies.py                           33     33     0%   1-54
+app/models/tenancy.py                            30     30     0%   1-54
+app/repositories/__init__.py                      0      0   100%
+app/repositories/base.py                         15     15     0%   1-52
+app/repositories/carrier_repository.py           48     48     0%   1-147
+app/repositories/policy_repository.py            69     69     0%   1-203
+app/repositories/variance_repository.py         100    100     0%   1-292
+app/schemas/__init__.py                           0      0   100%
+app/schemas/auth.py                              20      0   100%
+app/schemas/dashboard.py                         39      0   100%
+app/schemas/policies.py                          45      0   100%
+app/schemas/responses.py                         96      0   100%
+app/schemas/tenant.py                            17      0   100%
+app/services/__init__.py                          0      0   100%
+app/services/ai_narrative_service.py             78     18    77%   71-72, 97-98, 105-106, 132-134, 161-183
+app/services/audit_calculation_service.py       386    167    57%   269-270, 286-298, 322-323, 336-337, 415-449, 471-586, 617-618, 644-646, 664-673, 697-831, 845-847, 870, 875-876, 940-948, 968-1012, 1017-1023, 1029, 1039
+app/services/auto_mapping_service.py            340    228    33%   1156, 1159, 1177-1178, 1202-1357, 1381-1480, 1489-1537, 1556, 1612, 1639-1648, 1676-1678, 1717-1732
+app/services/ingestion_error_codes.py            26      0   100%
+app/services/ingestion_service.py              1044    944    10%   3714, 3720-3721, 3725-3733, 3737-3742, 3790-3821, 3836-3892, 3962-3969, 3975-3982, 3985-3993, 3999-4009, 4027-4038, 4065-4564, 4585-4654, 4669-4686, 4696-4773, 4781-4787, 4804-4882, 4890-4901, 4908-4916, 4919-4945, 4988-5019, 5030-5181, 5184-5210, 5213-5243, 5256-5388, 5397-5407, 5457, 5467-5474, 5485-5499, 5519-5603, 5647-5726, 5739-5771, 5788-5790, 5816-5819, 5842-5858, 5864-5898, 5904-5942, 5948-6001, 6007-6035, 6041-6073
+app/services/keycloak_admin_service.py          167     75    55%   64-65, 87-88, 107, 161-162, 169-170, 176-183, 190-195, 241, 252-261, 312, 330-344, 354-370, 414, 424-429, 437, 447, 462-495, 504-513
+app/services/rollback_service.py                 80     68    15%   81-232, 236-243
+app/services/tenant_provisioning_service.py      86     12    86%   229-244, 289-302
+app/tenancy/__init__.py                           0      0   100%
+app/tenancy/middleware.py                        58     16    72%   95, 101, 148-159, 170-184
+app/utils/__init__.py                             0      0   100%
+app/utils/text_utils.py                          48     13    73%   36-43, 57, 61, 65, 69, 73
+---------------------------------------------------------------------------
+TOTAL                                          4856   2712    44%
+
+=========================== short test summary info ============================
+FAILED tests/integration/test_ingestion_api.py::test_upload_rejects_non_xlsx
+FAILED tests/integration/test_policies_api.py::test_policy_list_returns_200
+FAILED tests/unit/test_ingestion_service.py::test_run_raises_for_non_xlsx - A...
+================== 3 failed, 216 passed, 5 warnings in 15.49s ==================
