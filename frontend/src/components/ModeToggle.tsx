@@ -80,12 +80,7 @@ export function ModeToggle(): React.JSX.Element | null {
     staleTime: 5 * 60 * 1000,
   });
 
-  const { data: userPref } = useQuery({
-    queryKey: ["user-theme-pref"],
-    queryFn: fetchUserPref,
-    enabled: !isSuperAdmin && carrierId > 0,
-    staleTime: 5 * 60 * 1000,
-  });
+
 
   const resolvedTheme = queryClient.getQueryData<ResolvedTheme>(["theme", carrierId]);
   const currentMode = resolvedTheme?.mode ?? "dark";

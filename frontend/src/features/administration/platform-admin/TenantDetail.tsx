@@ -55,7 +55,7 @@ export function TenantDetail(): React.JSX.Element {
   const { slug } = useParams<{ slug: string }>();
   const label = useLabels("tenant_detail");
   const labelShared = useLabels("shared");
-  // const labelPa = useLabels("platform_admin");
+
   const navigate = useNavigate();
   const qc = useQueryClient();
 

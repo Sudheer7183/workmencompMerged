@@ -35,10 +35,7 @@ interface UserThemePref {
   theme_source: "SYSTEM" | "CUSTOM";
 }
 
-interface CarrierThemeConfig {
-  default_theme_id: number;
-  allow_user_override: boolean;
-}
+
 
 const SWATCH_FIELDS: Array<keyof ThemeOption & string> = [
   "bg", "surface", "brand", "accent", "text_primary",

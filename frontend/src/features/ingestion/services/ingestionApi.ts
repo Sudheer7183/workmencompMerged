@@ -182,7 +182,7 @@ export async function fetchCarrierIngestionMode(
 // All calls use axios (per FIXES.md Bug #2 — no raw fetch)
 // =============================================================================
 
-import axios from "axios";
+
 
 // ---------------------------------------------------------------------------
 // Exception tracking types

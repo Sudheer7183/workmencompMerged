@@ -25,7 +25,6 @@ interface ThemeImportExportProps {
 }
 
 export function ThemeImportExport({
-  carrierId,
   onImported,
 }: ThemeImportExportProps): React.JSX.Element {
   const fileInputRef = useRef<HTMLInputElement>(null);

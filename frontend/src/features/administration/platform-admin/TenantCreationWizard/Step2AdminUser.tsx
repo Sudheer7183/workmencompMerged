@@ -24,7 +24,7 @@ interface Props {
 
 export function Step2AdminUser({ initial, onNext, onBack }: Props): React.JSX.Element {
   const label_platform_admin = useLabels("platform_admin");
-  // const label_shared = useLabels("shared");
+
   const [firstName, setFirstName] = useState(initial?.firstName ?? "");
   const [lastName, setLastName] = useState(initial?.lastName ?? "");
   const [email, setEmail] = useState(initial?.email ?? "");
